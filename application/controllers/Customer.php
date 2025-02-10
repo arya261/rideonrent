@@ -1,0 +1,52 @@
+<?php
+ class Customer extends CI_Controller{
+     public function index(){
+        $customers=$this->db->query("SELECT * FROM customer C LEFT OUTER JOIN adress A ON A.adress_id=C.adress_id")->result();
+        $data['customers']=$customers;
+        // echo '<pre>';
+        // print_r($customers);
+        // exit();
+        $this->load->view("customer/list",$data);
+     }
+     public function dashboard()
+     {
+        $this->load->library('session');
+        $login_id = $this->session->userdata("login_id");
+        $customer_details   = $this->db->query("SELECT C.customer_name FROM customer C LEFT OUTER JOIN login L ON L.login_id = C.login_id WHERE L.login_id=".$login_id)->result();
+        $data['customer_details']   = $customer_details;
+        $vehicle  =$this->db->query("SELECT V.make,V.model,V.vehicle_id,V.license_plate FROM vehicle V")->result();
+            foreach($vehicle as $v){
+                $v->vehicle_name   = $v->make." " .$v->model." " .$v->license_plate;
+            }
+      $data["vehicle"] = $vehicle;
+		$this->load->view("customer/dashboard",$data);
+
+     }
+     public function vehicle_availability(){
+        $result['message']      = 'AVAILABLE';
+        $result['status']       = 1;
+        $vehicle_id             = $this->input->post('vehicle_id');
+        $veh_status = $this->db->query("SELECT status FROM vehicle WHERE vehicle_id=".$vehicle_id)->row()->status;
+        if($veh_status != 'AVAILABLE'){
+            $result['message']      = 'NOT AVAILABLE';
+            $result['status']       = 1;
+            echo json_encode ($result);
+            exit();
+        }
+        echo json_encode ($result);
+     }
+     function next_vehicle($vehicle_id =0){
+         $min_vehicle_id = $this->db->query("SELECT MIN(vehicle_id) AS max_veh_id FROM vehicle")->row()->max_veh_id;
+         if($vehicle_id==""){
+            $vehicle_id=$min_vehicle_id;
+         }
+         $vehicle_id = $vehicle_id+1;
+         $max_vehicle_id = $this->db->query("SELECT MAX(vehicle_id) AS max_veh_id FROM vehicle")->row()->max_veh_id;
+        if($vehicle_id == $max_vehicle_id){
+            $vehicle_id = $min_vehicle_id;
+        }
+        $result     = $this->db->query("SELECT * FROM vehicle WHERE vehicle_id = ".$vehicle_id)->result();
+        // print_r($result);
+        echo json_encode($result);
+     }
+ }
