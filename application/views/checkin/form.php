@@ -9,6 +9,7 @@
 </head>
 <body>
     <?php
+    $checkout_id = '';
     $ordometer_out ='';
     $fuel_out ='';
     $checkout_date = '';
@@ -17,7 +18,8 @@
     $amount ='';
     $remark ='';
     $discount = '';
-    // $mode = 'add';
+    $vehicle_id = '';
+    $customer_id = '';
 
     if($mode =='edit'){
         foreach($checkout as $c){
@@ -29,6 +31,9 @@
             $amount = $c->amount;
             $remark = $c->remark;
             $discount = $c->discount;
+            $checkout_id = $c->checkout_id;
+            $vehicle_id = $c->vehicle_id;
+            $customer_id = $c->customer_id;
         }
       
     }
@@ -46,27 +51,31 @@
 
 
     <form action="<?=base_url()?>/checkout/process" id="registration_form" method="post">
-    <div style class="container">
+        
+    <div class="container">
         <!-- Left Section -->
         <div class="left">
+        <input type="hidden" name="mode" value="<?=$mode?>" id="">
+        <input type="hidden" name="checkout_id" value="<?=$checkout_id?>" id="">
+        
             <h3>Select Vehicle</h3>
             <div class="form-group">
                 <label for="vehicle">Vehicle:</label>
                 <select id="vehicle" name="vehicle_id">
-                    <option <?php if($vehicle=='1') echo "selected";?> value="1">Vehicle 1</option>
-                    <option <?php if($vehicle=='2') echo "selected";?> value="2">Vehicle 2</option>
-                    <option <?php if($vehicle=='3') echo "selected";?> value="3">Vehicle 3</option>
+                    <?php foreach($vehicle as $v) { ?>
+                        <option <?php if($v->vehicle_id == $vehicle_id) echo "selected"?> value="<?=$v->vehicle_id?>"><?=$v->vehicle_name?></option>
+                    <?php }?>
                 </select>
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="odometer">Odometer In:</label>
-                    <input type="text" id="odometer" name="ordometer_in" value="<?=$ordometer_in?>" placeholder="Enter Odometer Reading">
+                    <label for="odometer">Odometer Reading:</label>
+                    <input type="text" id="odometer" name="ordometer_out" value="<?=$ordometer_out?>" placeholder="Enter Odometer Reading">
                 </div>
 
                 <div class="form-group">
-                    <label for="fuel">Fuel In:</label>
-                    <input type="text" id="fuel" name="	fuel_in" value="<?=$fuel_in?>" placeholder="Enter Fuel Reading">
+                    <label for="fuel">Fuel Reading:</label>
+                    <input type="text" id="fuel" name="fuel_out" value="<?=$fuel_out?>" placeholder="Enter Fuel Reading">
                 </div>
             </div>
         </div>
@@ -77,7 +86,11 @@
         <div class="right">
         <div class="form-group">
                     <label for="duration">Select customer</label>
-                    <input type="text" id="duration" name="customer_name" placeholder="select customer">
+                    <select name="customer_id" id="">
+                        <?php foreach($customer as $c){?>
+                            <option <?php if($c->customer_id == $customer_id) echo "selected"?> value="<?=$c->customer_id?>"><?=$c->customer_name?></option>
+                            <?php }?>
+                    </select>
                 </div>
             <div class="form-row">
                
@@ -123,8 +136,8 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="remark">Notes:</label>
-                <textarea id="remark" name="notes" value="<?=$notes?>" rows="4" placeholder="Enter any remarks"><?=$remark?></textarea>
+                <label for="remark">Remark:</label>
+                <textarea id="remark" name="remark" value="<?=$remark?>" rows="4" placeholder="Enter any remarks"><?=$remark?></textarea>
             </div>
 
             <button type="submit" class="button">confirm checkout</button>

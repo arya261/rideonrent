@@ -7,13 +7,15 @@
     <link rel="stylesheet" href="<?php echo base_url() ?>/assets/css/checkoutlist.css">
 </head>
 <body>
-    <div class="container">
+    <div class="container" style="width:90%;">
         <h2>Checkout List</h2>
         <table class="checkout-table">
             <thead>
                 <tr>
                     <th>Serial No.</th>
                     <th>Customer Name</th>
+                    <th> Vehicle Name</th>
+                    <th>license Plate</th>
                     <th>Checkout Date</th>
                     <th>Checkin Date</th>
                     <th>Odometer Out</th>
@@ -29,13 +31,15 @@
                 <tr>
                     <td><?=$sno?></td>
                     <td><?=$c->customer_name?></td>
+                    <td><?=$c->make." ".$c->model?></td>
+                    <td><?=$c->license_plate?></td>
                     <td><?=$c->checkout_date?></td>
                     <td><?=$c->expected_checkin_date?></td>
                     <td><?=$c->ordometer_out?></td>
                     <td><?=$c->fuel_out?></td>
                     <td><?=$c->amount?></td>
                     <td>
-                        <button class="edit-btn" onclick="edit(<?=$c->vehicle_id?>)">Edit</button>
+                        <button class="edit-btn" onclick="edit(<?=$c->checkout_id?>)">Edit</button>
                         <button class="delete-btn" onclick="delete_item(<?=$c->checkout_id?>)">Delete</button>
                     </td>
                 </tr>

@@ -9,6 +9,7 @@
 </head>
 <body>
     <?php
+    $checkout_id = '';
     $ordometer_out ='';
     $fuel_out ='';
     $checkout_date = '';
@@ -17,6 +18,8 @@
     $amount ='';
     $remark ='';
     $discount = '';
+    $vehicle_id = '';
+    $customer_id = '';
 
     if($mode =='edit'){
         foreach($checkout as $c){
@@ -28,6 +31,9 @@
             $amount = $c->amount;
             $remark = $c->remark;
             $discount = $c->discount;
+            $checkout_id = $c->checkout_id;
+            $vehicle_id = $c->vehicle_id;
+            $customer_id = $c->customer_id;
         }
       
     }
@@ -45,15 +51,19 @@
 
 
     <form action="<?=base_url()?>/checkout/process" id="registration_form" method="post">
+        
     <div class="container">
         <!-- Left Section -->
         <div class="left">
+        <input type="hidden" name="mode" value="<?=$mode?>" id="">
+        <input type="hidden" name="checkout_id" value="<?=$checkout_id?>" id="">
+        
             <h3>Select Vehicle</h3>
             <div class="form-group">
                 <label for="vehicle">Vehicle:</label>
                 <select id="vehicle" name="vehicle_id">
                     <?php foreach($vehicle as $v) { ?>
-                        <option value="<?=$v->vehicle_id?>"><?=$v->vehicle_name?></option>
+                        <option <?php if($v->vehicle_id == $vehicle_id) echo "selected"?> value="<?=$v->vehicle_id?>"><?=$v->vehicle_name?></option>
                     <?php }?>
                 </select>
             </div>
@@ -78,7 +88,7 @@
                     <label for="duration">Select customer</label>
                     <select name="customer_id" id="">
                         <?php foreach($customer as $c){?>
-                            <option value="<?=$c->customer_id?>"><?=$c->customer_name?></option>
+                            <option <?php if($c->customer_id == $customer_id) echo "selected"?> value="<?=$c->customer_id?>"><?=$c->customer_name?></option>
                             <?php }?>
                     </select>
                 </div>

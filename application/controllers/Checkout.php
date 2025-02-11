@@ -23,10 +23,18 @@ class Checkout extends CI_Controller{
     $this->load->view("checkout/form",$data);
     
   }
-  public function edit($vehicle_id){
-    $checkout=$this->db->query("SELECT * FROM checkout")->result();
+  public function edit($checkout_id){
+    $checkout=$this->db->query("SELECT * FROM checkout WHERE checkout_id=".$checkout_id)->result();
     $data['checkout']= $checkout;
+    // echo '<pre>'; print_r($checkout); exit();
     $data["mode"]="edit";
+    $vehicle  =$this->db->query("SELECT V.make,V.model,V.vehicle_id,V.license_plate FROM vehicle V")->result();
+    foreach($vehicle as $v){
+      $v->vehicle_name   = $v->make." " .$v->model." " .$v->license_plate;
+    }
+    $customer =$this->db->query("SELECT customer_name,customer_id FROM customer")->result();
+    $data["customer"]=$customer;
+    $data["vehicle"]=$vehicle;
     $this->load->view("checkout/form",$data);
   }
   public function delete($checkout_id){
@@ -35,7 +43,9 @@ class Checkout extends CI_Controller{
   }
   public function process(){
     $data=$_POST;
-    echo '<pre>'; print_r($data);
+    $mode=$data['mode'];
+    $checkout_id=$data['checkout_id'];
+    // echo '<pre>'; print_r($data);exit();
     $checkout_date          = $data['checkout_date']?date('Y-m-d',strtotime($data['checkout_date'])):NULL;
     $checkout_time = isset($data['from_datetime']) ? $data['from_datetime'] : NULL;
     if ($checkout_date && $checkout_time) {
@@ -72,9 +82,15 @@ class Checkout extends CI_Controller{
         "remark"          =>$data["remark"]
     ];
     // print_r($data);
-    $this->db->insert("checkout", $checkout);
+    if($mode == 'add'){
+      $this->db->insert("checkout", $checkout);
+    }else{
+      $this->db->update('checkout',$checkout,array('checkout_id'=>$checkout_id));
+    }
     redirect("checkout");
   }
+}
 
 
-  }
+
+  
