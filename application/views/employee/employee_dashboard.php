@@ -98,7 +98,7 @@ body {
 /* Sidebar styles */
 .sidebar {
     width: 250px;
-    background-color: #333;
+    background-color:#1085eebd;
     color: white;
     padding-top: 20px;
 }

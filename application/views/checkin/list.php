@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout List</title>
-    <link rel="stylesheet" href="<?php echo base_url() ?>/assets/css/checkoutlist.css">
+    <title>Checkin List</title>
+    <link rel="stylesheet" href="<?php echo base_url() ?>/assets/css/checkinlist.css">
 </head>
 <body>
     <div class="container" style="width:90%;">
-        <h2>Checkout List</h2>
+        <h2>Checkin List</h2>
         <table class="checkout-table">
             <thead>
                 <tr>
@@ -18,15 +18,15 @@
                     <th>license Plate</th>
                     <th>Checkout Date</th>
                     <th>Checkin Date</th>
-                    <th>Odometer Out</th>
-                    <th>Fuel Out</th>
+                    <th>Odometer In</th>
+                    <th>Fuel In</th>
                     <th>Amount</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 <?php $sno=1;
-                 foreach($checkout as $c){
+                 foreach($checkin as $c){
                     ?>
                 <tr>
                     <td><?=$sno?></td>
@@ -34,13 +34,13 @@
                     <td><?=$c->make." ".$c->model?></td>
                     <td><?=$c->license_plate?></td>
                     <td><?=$c->checkout_date?></td>
-                    <td><?=$c->expected_checkin_date?></td>
-                    <td><?=$c->ordometer_out?></td>
-                    <td><?=$c->fuel_out?></td>
+                    <td><?=$c->checkin_date?></td>
+                    <td><?=$c->ordometer_in?></td>
+                    <td><?=$c->fuel_in?></td>
                     <td><?=$c->amount?></td>
                     <td>
-                        <button class="edit-btn" onclick="edit(<?=$c->checkout_id?>)">Edit</button>
-                        <button class="delete-btn" onclick="delete_item(<?=$c->checkout_id?>)">Delete</button>
+                        <button class="edit-btn" onclick="edit(<?=$c->checkin_id?>)">Edit</button>
+                        <button class="delete-btn" onclick="delete_item(<?=$c->checkin_id?>)">Delete</button>
                     </td>
                 </tr>
                 <?php $sno++; } ?>
@@ -48,11 +48,11 @@
         </table>
     </div>
     <script>
-        function edit(vehicle_id){
-            window.location.href="<?=base_url()?>checkout/edit/" +vehicle_id;
+        function edit(checkin_id){
+            window.location.href="<?=base_url()?>checkin/edit/" +checkin_id;
         }
-        function delete_item(checkout_id){
-            window.location.href="<?=base_url()?>checkout/delete/"  +checkout_id;
+        function delete_item(checkin_id){
+            window.location.href="<?=base_url()?>checkin/delete/"  +checkin_id;
         }
     </script>
 </body>

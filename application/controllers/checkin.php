@@ -2,60 +2,40 @@
 
 class checkin extends CI_Controller{
   public function index(){
-    $checkout=$this->db->query("SELECT C.*,S.customer_name,V.model,V.make,V.license_plate FROM checkout C LEFT OUTER JOIN customer S ON C.customer_id=S.customer_id LEFT OUTER JOIN vehicle V ON V.vehicle_id = C.vehicle_id" )->result();
-    // print_r($checkout);exit();
-    $data['checkout']=$checkout;
+    $checkin=$this->db->query("SELECT I.*,S.customer_name,V.model,V.make,V.license_plate,C.checkout_date FROM checkin I JOIN checkout C ON C.checkout_id=I.checkout_id JOIN customer S ON C.customer_id=S.customer_id JOIN vehicle V ON V.vehicle_id = C.vehicle_id" )->result();
+    // echo "<pre>";
+    // print_r($checkin);exit();
+    $data['checkin']=$checkin;
     $this->load->view("checkin/list", $data);
-
+ 
   }            
-  public function add(){
+  public function add($checkout_id){
+    
+$checkin=$this->db->query("SELECT C.*,S.customer_name,V.model,V.make,v.license_plate FROM checkout C LEFT OUTER JOIN customer S ON S.customer_id=C.customer_id LEFT OUTER JOIN vehicle V ON V.vehicle_id=C.vehicle_id WHERE checkout_id=".$checkout_id)->result();
+$data["checkin"]=$checkin;
+// echo '<pre>';
+//  print_r($checkin); exit();
+
     $data["mode"]="add";
-    $vehicle  =$this->db->query("SELECT V.make,V.model,V.vehicle_id,V.license_plate FROM vehicle V")->result();
-    foreach($vehicle as $v){
-      $v->vehicle_name   = $v->make." " .$v->model." " .$v->license_plate;
-    }
-    $customer =$this->db->query("SELECT customer_name,customer_id FROM customer")->result();
-    $data["customer"]=$customer;
-
-
-  //  echo '<pre>'; print_r($customer);exit();
-    $data["vehicle"]=$vehicle;
     $this->load->view("checkin/form",$data);
     
   }
-  public function edit($checkout_id){
-    $checkout=$this->db->query("SELECT * FROM checkout WHERE checkout_id=".$checkout_id)->result();
-    $data['checkout']= $checkout;
+  public function edit($checkin_id){
+    $checkin=$this->db->query("SELECT I.*,C.customer_id,C.vehicle_id,S.customer_name,V.model,V.make,v.license_plate,C.checkout_date FROM checkin I LEFT OUTER JOIN checkout C ON I.checkout_id= C.checkout_id LEFT OUTER JOIN customer S ON S.customer_id=C.customer_id LEFT OUTER JOIN vehicle V ON V.vehicle_id=C.vehicle_id WHERE checkin_id=".$checkin_id)->result();
+    $data['checkin']= $checkin;
     // echo '<pre>'; print_r($checkout); exit();
     $data["mode"]="edit";
-    $vehicle  =$this->db->query("SELECT V.make,V.model,V.vehicle_id,V.license_plate FROM vehicle V")->result();
-    foreach($vehicle as $v){
-      $v->vehicle_name   = $v->make." " .$v->model." " .$v->license_plate;
-    }
-    $customer =$this->db->query("SELECT customer_name,customer_id FROM customer")->result();
-    $data["customer"]=$customer;
-    $data["vehicle"]=$vehicle;
-    $this->load->view("checkout/form",$data);
+    $this->load->view("checkin/form",$data);
   }
-  public function delete($checkout_id){
-    $this->db->query("DELETE FROM checkout where checkout_id=$checkout_id");
-    redirect("checkout");
+  public function delete($checkin_id){
+    // echo $checkin_id; exit();
+    $this->db->delete("checkin",array('checkin_id'=>$checkin_id));
+    redirect("checkin");
   }
   public function process(){
     $data=$_POST;
-    $mode=$data['mode'];
-    $checkout_id=$data['checkout_id'];
-    // echo '<pre>'; print_r($data);exit();
-    $checkout_date          = $data['checkout_date']?date('Y-m-d',strtotime($data['checkout_date'])):NULL;
-    $checkout_time = isset($data['from_datetime']) ? $data['from_datetime'] : NULL;
-    if ($checkout_date && $checkout_time) {
-        $checkout_datetime = $checkout_date . ' ' . $checkout_time;
-        $checkout_datetime = date('Y-m-d H:i:s', strtotime($checkout_datetime));
-    } 
-    else{
-        $checkout_datetime = $checkout_date;
-        $checkout_datetime = date('Y-m-d H:i:s', strtotime($checkout_datetime));
-    }
+    $mode = $data["mode"];
+    $checkin_id = $data["checkin_id"];
     $expected_checkin_date          = $data['expected_checkin_date']?date('Y-m-d',strtotime($data['expected_checkin_date'])):NULL;
     $checkin_time = isset($data['to_datetime']) ? $data['to_datetime'] : NULL;
     if ($expected_checkin_date && $checkin_time) {
@@ -66,28 +46,24 @@ class checkin extends CI_Controller{
         $checkin_datetime = $expected_checkin_date;
         $checkin_datetime = date('Y-m-d H:i:s', strtotime($checkin_datetime));
     }
-    // echo $checkin_datetime .'<br>';
-    // echo $checkout_datetime;
-    // exit();
-    $checkout=[
-        "vehicle_id"      =>$data['vehicle_id'],
-        "customer_id"     =>$data['customer_id'],
-        "ordometer_out"   =>$data["ordometer_out"],
-        "fuel_out"        =>$data["fuel_out"],
-        "checkout_date"   =>$checkout_datetime,
-        "expected_checkin_date" =>$checkin_datetime,
+    
+    $checkin=[
+        "checkout_id"      =>$data['checkout_id'],
+      
+        "ordometer_in"    =>$data["ordometer_in"],
+        "fuel_in"         =>$data["fuel_in"],
+        "checkin_date" =>$checkin_datetime,
         "fixed_charge"    =>$data["fixed_charge"],
         "discount"        =>$data["discount"],
         "amount"          =>$data["fixed_charge"] - $data['discount'],
-        "remark"          =>$data["remark"]
+        "notes"           =>$data["notes"]
     ];
-    // print_r($data);
     if($mode == 'add'){
-      $this->db->insert("checkout", $checkout);
+      $this->db->insert("checkin",$checkin);
     }else{
-      $this->db->update('checkout',$checkout,array('checkout_id'=>$checkout_id));
+      $this->db->update('checkin',$checkin,array('checkin_id'=>$checkin_id));
     }
-    redirect("checkout");
+    redirect("checkin");
   }
 }
 

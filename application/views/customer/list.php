@@ -68,7 +68,7 @@
                     <td>DL222333444</td>
                     <td>San Francisco, CA</td>
                     <td>94110</td>
-                    <td><button class="block-btn">Block</button></td>
+                 <td><button class="block-btn">Block</button></td> 
                 </tr> -->
             </tbody>
         </table>

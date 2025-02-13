@@ -8,7 +8,7 @@
 </head>
 <body>
 
-    <div class="table-container">
+    <div style=" max-width:1086px;" class="table-container">
         <h2>Vehicle List</h2>
         <table>
             <thead>

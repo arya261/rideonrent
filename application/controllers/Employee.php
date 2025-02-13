@@ -64,7 +64,7 @@ class Employee extends CI_Controller {
         ];
         $this->db->insert("employee",$employee_array);
         $result=$this->db->insert_id();
-        if($result){
+        if($result){ 
             // $this->load->view("employee/emp_list");
             redirect("employee/list");
         }
@@ -99,8 +99,12 @@ class Employee extends CI_Controller {
             
         ];
         $this->db->update("employee",$employee_array,array('emp_id'=>$emp_id));
+
+    
+
+
+        }
             redirect("employee/list");
     }
 }
     
-}

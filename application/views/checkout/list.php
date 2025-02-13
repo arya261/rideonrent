@@ -41,7 +41,7 @@
                     <td>
                         <button class="edit-btn" onclick="edit(<?=$c->checkout_id?>)">Edit</button>
                         <button class="delete-btn" onclick="delete_item(<?=$c->checkout_id?>)">Delete</button>
-                        <button class="checkin-btn">Checkin</button>
+                        <button class="checkin-btn" onclick="checkin(<?=$c->checkout_id?>)">Checkin</button>
                     </td>
                 </tr>
                 <?php $sno++; } ?>
@@ -54,6 +54,9 @@
         }
         function delete_item(checkout_id){
             window.location.href="<?=base_url()?>checkout/delete/"  +checkout_id;
+        }
+        function checkin(checkout_id){
+            window.location.href="<?=base_url()?>checkin/add/" +checkout_id;
         }
     </script>
 </body>

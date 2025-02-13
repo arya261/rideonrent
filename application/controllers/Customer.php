@@ -49,4 +49,25 @@
         // print_r($result);
         echo json_encode($result);
      }
+     function vehicle_booking(){
+        $this->load->library('session');
+        $result['message']      = 'Booked succesfully';
+        $result['status']       = 1;
+        $login_id = $this->session->userdata("login_id");
+        $customer_id    = $this->db->query("SELECT C.customer_id FROM customer C WHERE C.login_id=".$login_id)->row()->customer_id;
+        $from_date      = $this->input->post('book_from_date');
+        $to_date        = $this->input->post('book_to_date');
+        $vehicle_id     = $this->input->post('vehicle_book_id');
+        $booking_array=[
+            'customer_id'   =>$customer_id,
+            'vehicle_id'    =>$vehicle_id,
+            'from_date'     =>$from_date,
+            'to_date'       =>$to_date,
+            'status'        => '0'
+
+        ];
+        // echo '<pre>'; print_r($booking_array);
+        $this->db->insert('booking',$booking_array);
+        echo json_encode ($result);
+     }
  }

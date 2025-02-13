@@ -149,16 +149,18 @@
                     <div class="col-sm-8 book-list"></div>
                     <div class="col-sm-4 ">
                         <div class="last-div" style="padding:10px">
-                            <h6 id="book_veh_name">Vehicle Name</h6>
-                            <input type="hidden" value="" name="" id="veh_book_id">
-                            <div class="row">
-                                <div class="col-sm-6"><label class="labels" for="">From date</label><input type="date" name="" id=""></div>
-                                <div class="col-sm-6"><label class="labels">To date</label><input type="date" name="" id=""></div>
-                            </div>
-                            <h5 style="text-align:right;margin-top:10px"><strong id="book_price">₹ 0.00</strong></h5>
-                            <div class="" style="display:flex; justify-content:center">
-                                <button class="check-but">BOOK NOW</button>
-                            </div>
+                            <form action="" id="veh_book_form">
+                                <h6 id="book_veh_name">Vehicle Name</h6>
+                                <input type="hidden" value="" name="vehicle_book_id" id="veh_book_id">
+                                <div class="row">
+                                    <div class="col-sm-6"><label class="labels" for="">From date</label><input type="date" name="book_from_date" id=""></div>
+                                    <div class="col-sm-6"><label class="labels">To date</label><input type="date" name="book_to_date" id=""></div>
+                                </div>
+                                <h5 style="text-align:right;margin-top:10px"><strong id="book_price">₹ 0.00</strong></h5>
+                            </form>
+                                <div class="" style="display:flex; justify-content:center">
+                                    <button class="check-but" onclick="book_vehicle()">BOOK NOW</button>
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -204,6 +206,35 @@
                 document.getElementById('veh_book_id').value = data[0].vehicle_id;                
                 }
             })
+        }
+        function book_vehicle(){
+            var form_data = $('#veh_book_form').serialize();
+            console.log(form_data); 
+            $.ajax({
+            url: "<?= base_url(); ?>customer/vehicle_booking/",  
+            type: "POST",  // HTTP method (POST)
+            data: form_data,  // Data to send with the request
+            success: function(result) {  // Callback function on success
+                var obj = JSON.parse(result);  // Parse the JSON response
+
+                if (obj.status == 1) {  // If status is 1, success
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",  // Use 'icon' instead of 'type' for SweetAlert2
+                        title: obj.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                } else {  // If status is not 1, error
+                    swal(obj.message);  // Display error message
+                }
+            },
+            error: function(xhr, status, error) {  // Callback function for error
+                console.log("AJAX Error: " + status + ": " + error);  // Log error if any
+            }
+        });
+            
+          
         }
    </script>
 </body>
