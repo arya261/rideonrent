@@ -34,6 +34,7 @@ $data["checkin"]=$checkin;
   }
   public function process(){
     $data=$_POST;
+    // print_r($data);exit();
     $mode = $data["mode"];
     $checkin_id = $data["checkin_id"];
     $expected_checkin_date          = $data['expected_checkin_date']?date('Y-m-d',strtotime($data['expected_checkin_date'])):NULL;
@@ -58,6 +59,10 @@ $data["checkin"]=$checkin;
         "amount"          =>$data["fixed_charge"] - $data['discount'],
         "notes"           =>$data["notes"]
     ];
+    $vehicle_array = [
+      'status' =>'AVAILABLE'
+    ];
+    $this->db->update('vehicle',$vehicle_array,array('vehicle_id'=>$data['vehicle_id']));
     if($mode == 'add'){
       $this->db->insert("checkin",$checkin);
     }else{

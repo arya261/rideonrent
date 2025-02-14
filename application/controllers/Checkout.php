@@ -10,7 +10,7 @@ class Checkout extends CI_Controller{
   }            
   public function add(){
     $data["mode"]="add";
-    $vehicle  =$this->db->query("SELECT V.make,V.model,V.vehicle_id,V.license_plate FROM vehicle V")->result();
+    $vehicle  =$this->db->query("SELECT V.make,V.model,V.vehicle_id,V.license_plate FROM vehicle V WHERE V.status = 'AVAILABLE'")->result();
     foreach($vehicle as $v){
       $v->vehicle_name   = $v->make." " .$v->model." " .$v->license_plate;
     }
@@ -81,6 +81,10 @@ class Checkout extends CI_Controller{
         "amount"          =>$data["fixed_charge"] - $data['discount'],
         "remark"          =>$data["remark"]
     ];
+    $vehicle_array = [
+      'status' =>'INSERVICE'
+    ];
+    $this->db->update('vehicle',$vehicle_array,array('vehicle_id'=>$data['vehicle_id']));
     // print_r($data);
     if($mode == 'add'){
       $this->db->insert("checkout", $checkout);

@@ -4,8 +4,27 @@ class Employee extends CI_Controller {
 
     public function index()
     {
+        $rental=$this->db->query("SELECT C.checkout_date,C.expected_checkin_date,S.customer_name,V.model,V.make,V.license_plate,I.checkin_id FROM checkout C LEFT OUTER JOIN customer S ON C.customer_id=S.customer_id LEFT OUTER JOIN vehicle V ON V.vehicle_id = C.vehicle_id LEFT OUTER JOIN checkin I ON I.checkout_id = C.checkout_id" )->result();
+        foreach ($rental as $r) {
+            $from_date =  date('Y-m-d', strtotime($r->checkout_date));
+            $to_date =  date('Y-m-d', strtotime($r->expected_checkin_date));
+            $datetime1 = new DateTime($from_date);
+            $datetime2 = new DateTime($to_date);
+            $interval = $datetime1->diff($datetime2);
+            $r->date_difference =  $interval->days; 
+            
+        }
+        $data['rental'] = $rental;
+        $data['total_rental']   = count($rental);
+        $avb_vehicles       = $this->db->query("SELECT vehicle_id FROM vehicle WHERE status = 'AVAILABLE'")->result();
+        $data['available_vehicles'] = count($avb_vehicles);
+        $upcoming_bookings      = $this->db->query("SELECT booking_id FROM booking WHERE status = '0'")->result();
+        // echo '<pre>'; print_r($upcoming_bookings);
+        $data["upcoming_bookings"] = count($upcoming_bookings);
+        // echo  $data["upcoming_bookings"]; exit();
+        // echo '<pre>'; print_r($rental); exit();
         
-        $this->load->view("employee/employee_dashboard");
+        $this->load->view("employee/employee_dashboard",$data);
        
     }
     public function list() {

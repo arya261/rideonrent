@@ -15,5 +15,16 @@ class booking extends CI_controller{
 
 
     }
+    public function update_status($booking_id,$status){
+        $booking_array= [
+            "status"=>$status  
+        ];
+        $this->db->update("booking",$booking_array,array('booking_id'=>$booking_id));
+        $result['status'] =1;
+        $result['message']='updated successfully';
+        echo json_encode($result);
+        
+    }
 
 }
+?>

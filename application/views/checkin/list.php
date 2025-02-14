@@ -4,11 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkin List</title>
-    <link rel="stylesheet" href="<?php echo base_url() ?>/assets/css/checkinlist.css">
+    <link rel="stylesheet" href="<?php echo base_url() ?>/assets/css/main.css">
 </head>
 <body>
-    <div class="container" style="width:90%;">
-        <h2>Checkin List</h2>
+<div class="main-container" style="">
+    <?php $this->load->view("common/sidebar");?>
+    <div class="right-container">
+    <div class="header-class">
+            <h2>Checkin List</h2>
+        </div>
+        
         <table class="checkout-table">
             <thead>
                 <tr>
@@ -46,6 +51,7 @@
                 <?php $sno++; } ?>
             </tbody>
         </table>
+    </div>
     </div>
     <script>
         function edit(checkin_id){

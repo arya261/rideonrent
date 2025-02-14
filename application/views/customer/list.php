@@ -5,11 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer List</title>
-    <link rel="stylesheet" href="<?php echo base_url() ?>/assets/css/list.css">
+    <link rel="stylesheet" href="<?php echo base_url() ?>/assets/css/main.css">
 </head>
 <body>
 
-    <div class="container">
+    <div class="main-container">
+        <?php $this->load->view("common/sidebar");?>
+        <div class="right-container">
         <h1>Customer List</h1>
         <table>
             <thead>
@@ -75,6 +77,7 @@
         <div class="footer">
             <p>&copy; 2025 Customer Data</p>
         </div>
+    </div>
     </div>
 
 </body>

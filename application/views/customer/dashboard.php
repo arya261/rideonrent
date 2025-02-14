@@ -15,7 +15,7 @@
 <body style="padding:0px">
     <div class="main-container">
         <div class="row" style="margin-left:0px; margin-right:0px">
-            <div class="col-sm-4 col-md-3 side-bar">
+            <div class="col-sm-4 col-md-2 side-bar">
                 <div class="logo-div">
                 <img style="height: 70px" src="<?php echo base_url(); ?>/assets/images/car-logo1.png" alt="">
 
@@ -25,7 +25,7 @@
                     <img src="" alt="">
                 </div>
             </div>
-            <div class="col-sm-8 col-md-9 main-div">
+            <div class="col-sm-8 col-md-10 main-div">
                 <div class="row">
                     <?php foreach($customer_details as $c) { ?>
                     <div class="col-sm-6">
@@ -146,7 +146,45 @@
                     </div>
                     </div>
                 <div class="row" style="margin-top: 3vh;padding-left: 15px;height: 27vh;">
-                    <div class="col-sm-8 book-list"></div>
+                    <div class="col-sm-8 book-list">
+                        <table class="veh-history-table">
+                            <thead>
+                                <tr>
+                                    <th>Sl no</th>
+                                    <th>Vehicle</th>
+                                    <th>From Date</th>
+                                    <th>To Date</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                    
+                                    $slno =1; foreach($booking as $b){
+                                        if($b->status == 1 ){
+                                            $status = "ACCEPTED";
+                                            $color  = "green";
+                                        }else if($b->status == 2){
+                                            $status = "REJECTED";
+                                            $color = "red";
+                                        }else{
+                                            $status = "PENDING";
+                                            $color = "blue";
+                                        }
+                                ?>
+                                <tr>
+                                    <td><?=$slno?></td>
+                                    <td><?=ucfirst($b->make )." ".ucfirst($b->model)?></td>
+                                    <td><?= date('d-m-Y', strtotime($b->from_date));?></td>
+                                    <td><?= date('d-m-Y', strtotime($b->to_date));?></td>
+                                    <td><?=$b->booking_amount?></td>
+                                    <td style="color:<?=$color?>"><?=$status?></td>
+                                </tr>
+                                <?php $slno ++; }?>
+                            </tbody>
+                        </table>
+                    </div>
                     <div class="col-sm-4 ">
                         <div class="last-div" style="padding:10px">
                             <form action="" id="veh_book_form">

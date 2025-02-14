@@ -4,12 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vehicle List</title>
-    <link rel="stylesheet" href="<?php echo base_url() ?>/assets/css/vehicle_list.css">
+    <link rel="stylesheet" href="<?php echo base_url() ?>/assets/css/main.css">
 </head>
 <body>
 
-    <div style=" max-width:1086px;" class="table-container">
-        <h2>Vehicle List</h2>
+<div class="main-container">
+    <?php $this->load->view("common/sidebar");?>
+    <div class="right-container">
+        <div class="header-class">
+            <h2>Vehicle List</h2>
+            <button class="add-but"><a class="add-a" href="<?=base_url()?>vehicle/add/"> + NEW VEHICLE</a></button>
+        </div>
         <table>
             <thead>
                 <tr>
@@ -42,6 +47,7 @@
                 <!-- More rows as needed -->
             </tbody>
         </table>
+    </div>
     </div>
     <script>
         function edit(vehicle_id){

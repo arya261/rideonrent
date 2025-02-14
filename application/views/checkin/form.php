@@ -26,7 +26,7 @@
             $model = $c->model;
             $license_plate = $c->license_plate;
             $customer_name = $c->customer_name;
-            $chekin_id = '';
+            $checkin_id = '';
     }}
     else{
         foreach($checkin as $c){
@@ -146,7 +146,7 @@
                 <textarea id="remark" name="notes" value="<?=$remark?>" rows="4" placeholder="Enter any remarks"><?=$remark?></textarea>
             </div>
 
-            <button type="submit" class="button">confirm checkout</button>
+            <button type="submit" class="button">confirm checkin</button>
         </div>
     </div>
     </form>

@@ -14,13 +14,16 @@
 .veh-spec-det{ display: flex;gap:1vh;height: 14vh;width:100%}
 .spec-details{height: 13vh;background-color: #c37f7f;width: 50%;border-radius: 7px;display: flex;justify-content: center;align-items: center;padding: 1vh;flex-direction: column;}
 .veh-available{background-color: #ffe0e0;height: 34vh;border-radius: 10px;padding: 10px;}
-.book-list{height:27vh; background-color: #ffe0e0;border-radius: 10px;}
+.book-list{height:27vh; background-color: #ffe0e0;border-radius: 10px;padding: 10px;overflow-y: scroll;}
 .last-div{height:27vh; background-color: #ffe0e0;border-radius: 10px;}
 .veh-available h6{text-align: center;}
 .labels{position: relative;top: 10px;font-size: 13px; font-weight: 600;}
 .check-avb{display:flex;justify-content:center;margin-top:20px;}
 .check-but{border: 1px solid green;border-color:#3ea470;text-align:center;background:#1fae63;color:white;font-size:13px;width:200px;border-radius:5px;}
 .next-veh{display: flex;justify-content: end;padding-right: 10px;}
+.veh-history-table{width: 100%;}
+.veh-history-table thead th{border: 2px solid black;padding: 5px;}
+.veh-history-table tbody td{border: 2px solid black;padding: 5px;}
 .container {
             max-width: 500px;
             margin: 0 auto;

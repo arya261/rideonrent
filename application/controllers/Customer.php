@@ -12,13 +12,29 @@
      {
         $this->load->library('session');
         $login_id = $this->session->userdata("login_id");
-        $customer_details   = $this->db->query("SELECT C.customer_name FROM customer C LEFT OUTER JOIN login L ON L.login_id = C.login_id WHERE L.login_id=".$login_id)->result();
+        $customer_details   = $this->db->query("SELECT C.customer_name,C.customer_id FROM customer C LEFT OUTER JOIN login L ON L.login_id = C.login_id WHERE L.login_id=".$login_id)->result();
+        foreach($customer_details as $c){
+            $customer_id = $c->customer_id;
+        }
+        $booking=$this->db->query("SELECT B.*,V.make,V.model,V.daily_charge FROM booking B LEFT OUTER JOIN vehicle V ON V.vehicle_id=B.vehicle_id WHERE B.customer_id=".$customer_id)->result();
+        $data["booking"]=$booking;
         $data['customer_details']   = $customer_details;
         $vehicle  =$this->db->query("SELECT V.make,V.model,V.vehicle_id,V.license_plate FROM vehicle V")->result();
             foreach($vehicle as $v){
                 $v->vehicle_name   = $v->make." " .$v->model." " .$v->license_plate;
             }
-      $data["vehicle"] = $vehicle;
+        $data["vehicle"] = $vehicle;
+        foreach($booking as $b){
+            $from_date =  date('Y-m-d', strtotime($b->from_date));
+            $to_date =  date('Y-m-d', strtotime($b->to_date));
+            $datetime1 = new DateTime($from_date);
+            $datetime2 = new DateTime($to_date);
+            $interval = $datetime1->diff($datetime2);
+            $date_difference =  $interval->days; 
+            // echo $date_difference; exit();
+            $b->booking_amount = $date_difference * $b->daily_charge;
+        }
+        // echo '<pre>'; print_r($booking); exit();
 		$this->load->view("customer/dashboard",$data);
 
      }

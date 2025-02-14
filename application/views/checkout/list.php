@@ -4,11 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout List</title>
-    <link rel="stylesheet" href="<?php echo base_url() ?>/assets/css/checkoutlist.css">
+    
+        </div>
+    <link rel="stylesheet" href="<?php echo base_url() ?>/assets/css/main.css">
 </head>
 <body>
-    <div class="container" style="width:95%;">
-        <h2>Checkout List</h2>
+    <div class="main-container" style="">
+    <?php $this->load->view("common/sidebar");?>
+        <div class="right-container">
+        <div class="header-class">
+            <h2>Vehicle List</h2>
+            <button class="add-but"><a class="add-a" href="<?=base_url()?>vehicle/add/"> + NEW VEHICLE</a></button>
+        </div>
         <table class="checkout-table">
             <thead>
                 <tr>
@@ -47,6 +54,7 @@
                 <?php $sno++; } ?>
             </tbody>
         </table>
+    </div>
     </div>
     <script>
         function edit(vehicle_id){
