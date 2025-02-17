@@ -9,6 +9,7 @@
         <li><a href="<?=base_url()?>/checkout">Checkout</a></li>
         <li><a href="<?=base_url()?>/checkin">Checkin</a></li>
         <li><a href="<?=base_url()?>/customer">Customers</a></li>
+        <li><a href="<?=base_url()?>/booking">Bookings</a></li>
         
     </ul>
 </div>

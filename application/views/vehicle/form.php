@@ -28,6 +28,7 @@
         $fuel_type='';
         $transmission_type='';
         $license_plate='';
+        $vehicle_id='';
         if($mode == 'edit'){
             foreach($vehicles as $v){
                 $make = $v->make;
@@ -46,6 +47,7 @@
                 $fuel_type=$v->fuel_type;
                 $transmission_type=$v->transmission_type;
                 $license_plate=$v->license_plate;
+                $vehicle_id=$v->vehicle_id;
 
 
             }
@@ -54,8 +56,9 @@
 
 
     <div class="form-container">
-        <h2>Vehicle Registration Form</h2>
+        <h2>VEHICLE REGISTRATION FORM</h2>
         <form action="<?=base_url()?>/vehicle/process" method="POST">
+            <input type ="hidden" name="vehicle_id" value="<?=$vehicle_id?>">
             <div class="row">
                 <div class="col-sm-4">
                     <!-- <div class="form-group">
@@ -188,7 +191,7 @@
 
 
                                     <div class="form-group">
-                                        <input type="submit" value="Submit Vehicle Information">
+                                        <input type="submit" value="Submit">
                                     </div>
         </form>
     </div>

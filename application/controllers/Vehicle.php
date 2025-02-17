@@ -23,16 +23,24 @@ class Vehicle extends CI_controller {
           $this->db->where('vehicle_id',$vehicle_id);
           $query = $this->db->get('vehicle');
           $result = $query->row();
+          
 
      
      $this->db->where('vehicle_id',$vehicle_id);
      $this->db->delete('vehicle');
+     redirect('vehicle');
      }
 
      public function process(){
       $data=$_POST;
-      print_r($data);
-      exit();
-      $this->db->insert("checkout",$data);
+      $vehicle_id= $data['vehicle_id'];
+      if($vehicle_id==''){
+      $this->db->insert("vehicle",$data);
+      }
+      else{
+          $this->db->update("vehicle",$data,array('vehicle_id'=>$vehicle_id));
+      }
+      redirect('vehicle');
+      
      }
 }

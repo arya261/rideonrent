@@ -26,7 +26,8 @@ class Login extends CI_Controller {
 		 $type = $obj->type;
 		 $login_email = $obj->email;
 		 $login_id = $obj->login_id;
-		 
+		//  echo $type; exit();
+		//  echo 1;
 		 
 		if ($password == $db_password) {
 			$session_array =[
@@ -34,14 +35,12 @@ class Login extends CI_Controller {
 				'login_email'	=>$login_email
 			];
 			// print_r($session_array);exit();
+			
 			$this->session->set_userdata($session_array);
 			if($type =='CUSTOMER'){
 				redirect('customer/dashboard',$data);
-			}else if($type == 'admin'){
-				$this->load->view("dashboard",$data);
-			}
-			else{
-				redirect("employee",$data);
+			}else{
+				redirect('employee');
 			}
 		} else {
    		 echo "login failed";

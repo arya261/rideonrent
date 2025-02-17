@@ -9,7 +9,7 @@
 </head>
 <body>
   <div class="wrapper">
-    <form action="Login/process" method="post">
+    <form action="<?=base_url()?>/Login/process" method="post">
       <h2>Login</h2>
         <div class="input-field">
         <input type="text" name="email" required>

@@ -13,8 +13,8 @@
     <?php $this->load->view("common/sidebar");?>
         <div class="right-container">
         <div class="header-class">
-            <h2>Vehicle List</h2>
-            <button class="add-but"><a class="add-a" href="<?=base_url()?>vehicle/add/"> + NEW VEHICLE</a></button>
+            <h2>CHECKOUT LIST</h2>
+            <button class="add-but"><a class="add-a" href="<?=base_url()?>checkout/add/"> + NEW CHECKOUT</a></button>
         </div>
         <table class="checkout-table">
             <thead>

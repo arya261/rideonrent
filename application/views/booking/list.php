@@ -4,12 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Booking List</title>
-    <link rel="stylesheet" href="<?php echo base_url() ?>/assets/css/bookinglist.css">
+    <link rel="stylesheet" href="<?php echo base_url() ?>/assets/css/main.css">
+    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <body>
-    <div class="container">
-        <h1>Booking List</h1>
+    <div class="main-container">
+    <?php $this->load->view("common/sidebar");?>
+    <div class="right-container">
+    <div class="header-class">
+            <h2>Booking List</h2>
+           
+        </div>
         <table>
             <thead>
                 <tr>
@@ -38,6 +44,7 @@
                 
             </tbody>
         </table>
+    </div>
     </div>
     <script>
         function status_update(booking_id,status){

@@ -156,6 +156,7 @@
                                     <th>To Date</th>
                                     <th>Amount</th>
                                     <th>Status</th>
+                                    <th>Replacement</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -180,11 +181,25 @@
                                     <td><?= date('d-m-Y', strtotime($b->to_date));?></td>
                                     <td><?=$b->booking_amount?></td>
                                     <td style="color:<?=$color?>"><?=$status?></td>
+                                    <td>
+                                    <button class="replacement" onclick="replacement(<?=$b->booking_id?>)">Replacement</button>
+             
+                                    </td>
                                 </tr>
                                 <?php $slno ++; }?>
                             </tbody>
                         </table>
                     </div>
+
+                   <script>
+                    funtion($booking_id){
+                        window.location.href()="<?base_url()?>dashboard/replacement" +booking_id
+                    }
+
+
+
+
+                   </script>
                     <div class="col-sm-4 ">
                         <div class="last-div" style="padding:10px">
                             <form action="" id="veh_book_form">

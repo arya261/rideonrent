@@ -25,9 +25,10 @@ body {
 
 /* Form heading */
 h2 {
-    text-align: center;
+    text-align: left;
     margin-bottom: 20px;
-    color: #4CAF50;
+    color: #18066e69;
+    font-size: 1.5rem;
 }
 
 /* Form group styling */
@@ -56,13 +57,13 @@ h2 {
 
 .form-group input[type="text"]:focus, 
 .form-group select:focus {
-    border-color: #4CAF50;
+    border-color: #18066e69;
     outline: none;
 }
 
 /* Submit button styling */
 .form-group input[type="submit"] {
-    background-color: #4CAF50;
+    background-color: #18066e69;
     color: white;
     font-size: 18px;
     font-weight: bold;
@@ -70,12 +71,13 @@ h2 {
     padding: 15px;
     cursor: pointer;
     border-radius: 4px;
-    width: 67%;
+    width: 13%;
     transition: background-color 0.3s;
+    margin-left:80%;
 }
 
 .form-group input[type="submit"]:hover {
-    background-color: #45a049;
+    background-color: #18066e69;
 }
 
 /* Responsive styling */

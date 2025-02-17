@@ -74,9 +74,7 @@
                 </tr> -->
             </tbody>
         </table>
-        <div class="footer">
-            <p>&copy; 2025 Customer Data</p>
-        </div>
+        
     </div>
     </div>
 
