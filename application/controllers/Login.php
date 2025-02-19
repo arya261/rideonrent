@@ -26,10 +26,9 @@ class Login extends CI_Controller {
 		 $type = $obj->type;
 		 $login_email = $obj->email;
 		 $login_id = $obj->login_id;
-		//  echo $type; exit();
-		//  echo 1;
-		 
-		if ($password == $db_password) {
+		 $verify= $obj->verification_status;
+		if ($password == $db_password ) {
+			if($verify!=0){
 			$session_array =[
 				'login_id'		=>$login_id,
 				'login_email'	=>$login_email
@@ -42,8 +41,11 @@ class Login extends CI_Controller {
 			}else{
 				redirect('employee');
 			}
-		} else {
-   		 echo "login failed";
+		}else{
+			echo "Blocked";
+		}
+	} else {
+   		 echo "Invalid username or password";
 		}
 	}
 }

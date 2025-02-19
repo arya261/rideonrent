@@ -192,8 +192,36 @@
                     </div>
 
                    <script>
-                    funtion($booking_id){
-                        window.location.href()="<?base_url()?>dashboard/replacement" +booking_id
+                    function replacement(booking_id){
+                        Swal.fire({
+        title: 'Are You Sure',
+        text: 'Do you want replacement',
+        icon: 'warning', // SweetAlert2 uses 'icon' instead of 'type'
+        showCancelButton: true,
+        cancelButtonColor: '#ccc',
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'replacement'
+    }).then((result) => {
+        if (result.isConfirmed) {  // Use isConfirmed instead of result.value
+            $.post("<?= base_url(); ?>customer/replacement_request/" + booking_id + "/" + status, function(result) {
+                var obj = JSON.parse(result);
+                if (obj.status == 1) {
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",  // 'type' is replaced with 'icon'
+                        title: obj.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',  // Adding an error icon for failure
+                        title: obj.message
+                    });
+                }
+            });
+        }
+    });
                     }
 
 

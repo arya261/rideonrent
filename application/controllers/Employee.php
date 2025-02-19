@@ -125,5 +125,15 @@ class Employee extends CI_Controller {
         }
             redirect("employee/list");
     }
+    function block_unblock($login_id,$status){
+        $login_array= [
+            "verification_status"=>  $status
+        ];
+        $this->db->update("login",$login_array,array('login_id'=>$login_id));
+        $result['status'] =1;
+        $result['message']='customery';
+        echo json_encode($result);
+        
+    }
 }
     

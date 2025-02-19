@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer List</title>
     <link rel="stylesheet" href="<?php echo base_url() ?>/assets/css/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 
@@ -25,58 +27,77 @@
                 </tr>
             </thead>
             <tbody>
-                <?php  foreach($customers as $c){?>
-                <tr>
+                <?php 
+                $bg_color   = 'white';
+                $color      = 'black';
+                foreach($customers as $c){
+                    if($c->verification_status ==0){
+                        $bg_color = '#fdebeb';
+                        $color = 'red';
+                    } else{
+                        $bg_color   = 'white';
+                        $color      = 'black';
+                    }
+                ?>
+                <tr style="background-color:<?=$bg_color?>; color:<?=$color?>" >
                 <td><?=$c->customer_name?></td>
                 <td><?=$c->phone_number?></td>
                 <td><?=$c->driving_license?></td>
                 <td><?=$c->country.",".$c->state.",".$c->district?></td>
                 <td><?=$c->zip_code?></td>
                 <td>
-                        <button class="block-btn">Block</button>
+                    <?php if($c->verification_status ==1){?>
+                        <button class="block-btn"onclick="block_unblock(<?=$c->login_id?>,0)">Block</button>
+                        <?php }else{?>
+                        <button class="block-btn"onclick="block_unblock(<?=$c->login_id?>,1)">Unblock</button>
+                        <?php }?>
                         
                     </td>
                     </tr>
                 
                 <?php }?>
-                <!-- <tr>
-                    <td>John Doe</td>
-                    <td>(123) 456-7890</td>
-                    <td>DL12345678</td>
-                    <td>New York, NY</td>
-                    <td>10001</td>
-                    <td><button class="block-btn">Block</button></td>
-                </tr>
-                
-                <tr>
-                    <td>Jane Smith</td>
-                    <td>(987) 654-3210</td>
-                    <td>DL98765432</td>
-                    <td>Los Angeles, CA</td>
-                    <td>90001</td>
-                    <td><button class="block-btn">Block</button></td>
-                </tr>
-                <tr>
-                    <td>Robert Brown</td>
-                    <td>(555) 123-4567</td>
-                    <td>DL55555555</td>
-                    <td>Chicago, IL</td>
-                    <td>60601</td>
-                    <td><button class="block-btn">Block</button></td>
-                </tr>
-                <tr>
-                    <td>Emily Johnson</td>
-                    <td>(888) 555-9999</td>
-                    <td>DL222333444</td>
-                    <td>San Francisco, CA</td>
-                    <td>94110</td>
-                 <td><button class="block-btn">Block</button></td> 
-                </tr> -->
             </tbody>
         </table>
         
     </div>
     </div>
+    <script>
+        function block_unblock(login_id,status){
+            Swal.fire({
+        title: 'Are you sure?',
+        text:'you want to block this customer',
+        icon: 'warning', // SweetAlert2 uses 'icon' instead of 'type'
+        showCancelButton: true,
+        cancelButtonColor: '#ccc',
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then((result) => {
+        if (result.isConfirmed) {  // Use isConfirmed instead of result.value
+            $.post("<?= base_url(); ?>employee/block_unblock/"+login_id+"/"+status , function(result) {
+                var obj = JSON.parse(result);
+                if (obj.status == 1) {
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",  // 'type' is replaced with 'icon'
+                        title: obj.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+    // Reload the page after the timer is finished
+    window.location.reload();
+});
+                } else {
+                    Swal.fire({
+                        icon: 'error',  // Adding an error icon for failure
+                        title: obj.message
+                    });
+                }
+            });
+        }
+    });
+}
+    </script>
+
 
 </body>
 </html>

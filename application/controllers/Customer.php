@@ -1,7 +1,7 @@
 <?php
  class Customer extends CI_Controller{
      public function index(){
-        $customers=$this->db->query("SELECT * FROM customer C LEFT OUTER JOIN adress A ON A.adress_id=C.adress_id")->result();
+        $customers=$this->db->query("SELECT C.*,A.*,L.verification_status FROM customer C LEFT OUTER JOIN adress A ON A.adress_id=C.adress_id LEFT OUTER JOIN login L ON L.login_id = C.login_id")->result();
         $data['customers']=$customers;
         // echo '<pre>';
         // print_r($customers);
@@ -53,15 +53,29 @@
      }
      function next_vehicle($vehicle_id =0){
          $min_vehicle_id = $this->db->query("SELECT MIN(vehicle_id) AS max_veh_id FROM vehicle")->row()->max_veh_id;
+         $max_vehicle_id = $this->db->query("SELECT MAX(vehicle_id) AS max_veh_id FROM vehicle")->row()->max_veh_id;
          if($vehicle_id==""){
             $vehicle_id=$min_vehicle_id;
          }
-         $vehicle_id = $vehicle_id+1;
-         $max_vehicle_id = $this->db->query("SELECT MAX(vehicle_id) AS max_veh_id FROM vehicle")->row()->max_veh_id;
+        //  $vehicle_id = $vehicle_id+1;
+         for($i=$vehicle_id; $i<=$max_vehicle_id;$i++){
+             $count = $this->db->query("SELECT vehicle_id FROM vehicle WHERE vehicle_id=".$vehicle_id)->result();
+             $count = count($count);
+             if($count== 0){
+                $vehicle_id +=1;
+             }else{
+                exit();
+             }
+         }
         if($vehicle_id == $max_vehicle_id){
             $vehicle_id = $min_vehicle_id;
         }
         $result     = $this->db->query("SELECT * FROM vehicle WHERE vehicle_id = ".$vehicle_id)->result();
+        // $vehicle_ids = $this->db->query("SELECT vehicle_id FROM vehicle ORDER BY vehicle_id ASC")->result();
+        // for($i =1; $i<=$max_vehicle_id; $i++){
+        //    echo $i; 
+        // }
+        // echo '<pre>'; print_r($vehicle_ids); exit();
         // print_r($result);
         echo json_encode($result);
      }
@@ -86,4 +100,16 @@
         $this->db->insert('booking',$booking_array);
         echo json_encode ($result);
      }
+     function replacement_request($booking_id){
+        $booking_array= [
+            "replacement_request"=>  1
+        ];
+        $this->db->update("booking",$booking_array,array('booking_id'=>$booking_id));
+        $result['status'] =1;
+        $result['message']='Your request was sent successfully';
+        echo json_encode($result);
+        
+
+     }
+    
  }
