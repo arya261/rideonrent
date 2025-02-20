@@ -32,6 +32,8 @@ class Vehicle extends CI_controller {
      }
 
      public function process(){
+     $this->load->library('Custom_Upload');
+     $this->custom_upload->do_upload('veh_image', './uploads/');
       $data=$_POST;
       $vehicle_id= $data['vehicle_id'];
       if($vehicle_id==''){

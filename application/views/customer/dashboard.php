@@ -113,7 +113,7 @@
                                     </div>
                                     <div class="spec-details" style="background-color:#c37fb438">
                                     <img style="height:6vh" src="<?php echo base_url(); ?>/assets/images/fuel.png" alt="">
-                                    <p>Petrol</p>
+                                    <p>Next</p>
                                     </div>
                                 </div>
                             </div>

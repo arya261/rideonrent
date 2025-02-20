@@ -61,10 +61,10 @@
             <input type ="hidden" name="vehicle_id" value="<?=$vehicle_id?>">
             <div class="row">
                 <div class="col-sm-4">
-                    <!-- <div class="form-group">
+                    <div class="form-group">
                         <label for="licence_plate">Upload image</label>
-                        <input type="file" id="vehicle" name="licence_plate"  >
-                    </div> -->
+                        <input type="file" id="vehicle" name="veh_image"  >
+                    </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">

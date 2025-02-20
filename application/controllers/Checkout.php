@@ -2,8 +2,8 @@
 
 class Checkout extends CI_Controller{
   public function index(){
-    $checkout=$this->db->query("SELECT C.*,S.customer_name,V.model,V.make,V.license_plate FROM checkout C LEFT OUTER JOIN customer S ON C.customer_id=S.customer_id LEFT OUTER JOIN vehicle V ON V.vehicle_id = C.vehicle_id" )->result();
-    // print_r($checkout);exit();
+    $checkout=$this->db->query("SELECT C.*,S.customer_name,V.model,V.make,V.license_plate,P.checkin_id FROM checkout C LEFT OUTER JOIN customer S ON C.customer_id=S.customer_id LEFT OUTER JOIN vehicle V ON V.vehicle_id = C.vehicle_id LEFT OUTER JOIN checkin P ON P.checkout_id = C.checkout_id " )->result();
+    // echo '<pre>'; print_r($checkout);exit();
     $data['checkout']=$checkout;
     $this->load->view("checkout/list", $data);
 

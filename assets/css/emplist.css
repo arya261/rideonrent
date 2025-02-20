@@ -65,8 +65,13 @@
     background-color: #f44336;
     color: white;
   }
+  .recent-rentals{
+    height: 68vh;
+    overflow-y: auto;
+  }
   
   button:hover {
     opacity: 0.8;
   }
+
   

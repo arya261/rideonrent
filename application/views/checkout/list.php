@@ -48,7 +48,9 @@
                     <td>
                         <button class="edit-btn" onclick="edit(<?=$c->checkout_id?>)">Edit</button>
                         <button class="delete-btn" onclick="delete_item(<?=$c->checkout_id?>)">Delete</button>
+                        <?php if($c->checkin_id == ''){?>
                         <button class="checkin-btn" onclick="checkin(<?=$c->checkout_id?>)">Checkin</button>
+                        <?php }?>
                     </td>
                 </tr>
                 <?php $sno++; } ?>

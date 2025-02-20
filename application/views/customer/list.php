@@ -65,7 +65,7 @@
         function block_unblock(login_id,status){
             Swal.fire({
         title: 'Are you sure?',
-        text:'you want to block this customer',
+         
         icon: 'warning', // SweetAlert2 uses 'icon' instead of 'type'
         showCancelButton: true,
         cancelButtonColor: '#ccc',

@@ -35,7 +35,7 @@
                 </div>
             </section>
 
-            <section class="recent-rentals">
+            <section class="recent-rentals" style="height:68vh; overflow-y: auto;">
                 <h2>Recent Rentals</h2>
                 <table>
                     <thead>

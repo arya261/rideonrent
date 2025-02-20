@@ -51,25 +51,26 @@
         }
         echo json_encode ($result);
      }
-     function next_vehicle($vehicle_id =0){
+     function next_vehicle_copy($vehicle_id =0){
          $min_vehicle_id = $this->db->query("SELECT MIN(vehicle_id) AS max_veh_id FROM vehicle")->row()->max_veh_id;
          $max_vehicle_id = $this->db->query("SELECT MAX(vehicle_id) AS max_veh_id FROM vehicle")->row()->max_veh_id;
          if($vehicle_id==""){
             $vehicle_id=$min_vehicle_id;
          }
-        //  $vehicle_id = $vehicle_id+1;
-         for($i=$vehicle_id; $i<=$max_vehicle_id;$i++){
-             $count = $this->db->query("SELECT vehicle_id FROM vehicle WHERE vehicle_id=".$vehicle_id)->result();
-             $count = count($count);
-             if($count== 0){
+         $vehicle_id = $vehicle_id+1;
+        for($i=$vehicle_id; $i<=$max_vehicle_id; $i++){
+            $count = $this->db->query("SELECT vehicle_id FROM vehicle WHERE vehicle_id=".$vehicle_id)->result();            
+            if($count == 0){
                 $vehicle_id +=1;
-             }else{
-                exit();
-             }
-         }
+            } else {
+                // Exit the loop when the condition in the else block is met
+                break;
+            }
+        }
         if($vehicle_id == $max_vehicle_id){
             $vehicle_id = $min_vehicle_id;
         }
+        // echo 'vehicle'.$vehicle_id; exit();
         $result     = $this->db->query("SELECT * FROM vehicle WHERE vehicle_id = ".$vehicle_id)->result();
         // $vehicle_ids = $this->db->query("SELECT vehicle_id FROM vehicle ORDER BY vehicle_id ASC")->result();
         // for($i =1; $i<=$max_vehicle_id; $i++){
@@ -77,6 +78,19 @@
         // }
         // echo '<pre>'; print_r($vehicle_ids); exit();
         // print_r($result);
+        echo json_encode($result);
+     }
+     function next_vehicle($vehicle_id =0){
+        $min_vehicle_id = $this->db->query("SELECT MIN(vehicle_id) AS max_veh_id FROM vehicle")->row()->max_veh_id;
+         $max_vehicle_id = $this->db->query("SELECT MAX(vehicle_id) AS max_veh_id FROM vehicle")->row()->max_veh_id;
+         if($vehicle_id==""){
+            $vehicle_id=$min_vehicle_id;
+         }
+         $vehicle_id = $vehicle_id+1;
+         if($vehicle_id == $max_vehicle_id){
+            $vehicle_id = $min_vehicle_id;
+        }
+        $result     = $this->db->query("SELECT * FROM vehicle WHERE vehicle_id = ".$vehicle_id)->result();
         echo json_encode($result);
      }
      function vehicle_booking(){

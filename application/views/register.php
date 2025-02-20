@@ -8,8 +8,9 @@
 </head>
 <body>
   <div class="container">
+  <img style="height: 70px" src="<?php echo base_url(); ?>/assets/images/car-logo1.png" alt="">
     <!-- Title section -->
-    <div class="title">Registration</div>
+    <div class="title">RIDEONRENT</div>
     <div class="content">
       <!-- Registration form -->
       <form action="register/process" id="registration_form" method="post">
@@ -18,30 +19,30 @@
           <div class="input-box">
             <span class="details">Full Name</span>
             <input type="text" name="fullname"  placeholder="Enter your name" required>
+          </div><div class="input-box">
+            <span class="details">Email</span>
+            <input type="text" name="email" placeholder="Enter your email" required>
           </div>
           <!-- Input for DOB -->
-          <div class="input-box">
-            <span class="details">DOB</span>
-            <input type="text" name="DOB" placeholder="DD/MM/YY format"  required>
-          </div>
+          
           <!-- Input for Password -->
            <!-- Input for Phone Number -->
           <div class="input-box">
             <span class="details">Phone Number</span>
-            <input type="text" name="phone_number" placeholder="Enter your number" required>
+            <input type="number" name="phone_number" placeholder="Enter your number" required>
           </div>
           <!-- Input for Email -->
           <div class="input-box">
-            <span class="details">Email</span>
-            <input type="text" name="email" placeholder="Enter your email" required>
+            <span class="details">Password</span>
+            <input type="password" name="password" id="password" placeholder="Enter your password" required>
           </div>
           
           <!-- Input for Username -->
           
           <!-- Input for Password -->
           <div class="input-box">
-            <span class="details">Password</span>
-            <input type="password" name="password" id="password" placeholder="Enter your password" required>
+            <span class="details">DOB</span>
+            <input type="text" name="DOB" placeholder="DD/MM/YY format"  required>
           </div>
           <!-- Input for Confirm Password -->
           <div class="input-box">
@@ -72,7 +73,7 @@
         <div class="user-details">
           <!-- Country -->
           <div class="input-box">
-            <h3>customer details</h3>
+           
             <span class="details">country</span>
             <input type="text" name="country" placeholder="Enter your country" required>
           </div>
@@ -99,15 +100,13 @@
           <!-- Address Number -->
           <div class="input-box">
             <span class="details">Address Number</span>
-            <input type="text" name="adress_number" placeholder="Enter your address number" required>
+            <input type="number" name="adress_number" placeholder="Enter your address number" required>
           </div>
         </div>
 
         <!-- Submit button -->
-        <div class="button">
-          <button type="submit" 
+          <button class="button" type="submit" 
            value="">submit</button>
-        </div>
       </form>
     </div>
   </div>
@@ -138,7 +137,7 @@
 }
 
 body {
-  height: 300vh;
+  
   display: flex;
   justify-content: center;
   align-items: center;
@@ -147,7 +146,7 @@ body {
 }
 
 .container {
-  max-width: 1000px;
+  max-width: 1532px;
   width: 200%;
   background-color: #fff;
   padding: 25px 30px;
@@ -249,6 +248,7 @@ form input[type="radio"] {
 form .button {
   height: 45px;
   margin: 35px 0;
+  margin-left: 72%;
 }
 
 form .button input {
@@ -277,7 +277,7 @@ form .user-details .input-box {
 
 /* Address Fields */
 form .user-details .input-box {
-  width: 100%;
+  width: 42%;
 }
 
 /* Responsive media query for smaller devices */
@@ -306,6 +306,18 @@ form .user-details .input-box {
   .container .content .category {
     flex-direction: column;
   }
+}
+.button{
+  background-color: #18066e69;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 20px;
+    width:16%;
+    margin-left: 45%;
 }
 
 
