@@ -21,6 +21,8 @@ class Employee extends CI_Controller {
         $upcoming_bookings      = $this->db->query("SELECT booking_id FROM booking WHERE status = '0'")->result();
         // echo '<pre>'; print_r($upcoming_bookings);
         $data["upcoming_bookings"] = count($upcoming_bookings);
+        $total_customer   =$this->db->query("SELECT customer_id FROM customer")->result();
+        $data["total_customer"] = count($total_customer);
         // echo  $data["upcoming_bookings"]; exit();
         // echo '<pre>'; print_r($rental); exit();
         
@@ -131,7 +133,7 @@ class Employee extends CI_Controller {
         ];
         $this->db->update("login",$login_array,array('login_id'=>$login_id));
         $result['status'] =1;
-        $result['message']='customery';
+        $result['message']='Customer has been updated';
         echo json_encode($result);
         
     }

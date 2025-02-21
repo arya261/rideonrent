@@ -44,8 +44,15 @@
                     <td><?=$c->fuel_in?></td>
                     <td><?=$c->amount?></td>
                     <td>
-                        <button class="edit-btn" onclick="edit(<?=$c->checkin_id?>)">Edit</button>
-                        <button class="delete-btn" onclick="delete_item(<?=$c->checkin_id?>)">Delete</button>
+                      
+                        <div class="dropdown">
+                            <button class="dropdown-button" id="dropdownButton<?=$c->checkin_id?>">More</button>
+                            <div class="dropdown-menu" id="dropdownMenu<?=$c->checkin_id?>">
+                                <a href="#" class="dropdown-item" onclick="edit(<?=$c->checkin_id?>)">Edit</a>
+                                <a href="#" class="dropdown-item" onclick="delete_item(<?=$c->checkin_id?>)">Delete</a>
+                               
+                            </div>
+                        </div>
                     </td>
                 </tr>
                 <?php $sno++; } ?>
@@ -60,6 +67,28 @@
         function delete_item(checkin_id){
             window.location.href="<?=base_url()?>checkin/delete/"  +checkin_id;
         }
+    </script>
+     <script>
+        document.querySelectorAll('.dropdown-button').forEach(button => {
+            button.addEventListener('click', function(event) {
+                var dropdownId = this.id.replace("dropdownButton", "dropdownMenu");
+                var dropdownMenu = document.getElementById(dropdownId);
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    if (menu !== dropdownMenu) {
+                        menu.style.display = 'none'; 
+                    }
+                });
+            
+                dropdownMenu.style.display = (dropdownMenu.style.display === "block") ? "none" : "block";
+            });
+        });
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-button')) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.style.display = 'none';
+                });
+            }
+        });
     </script>
 </body>
 </html>

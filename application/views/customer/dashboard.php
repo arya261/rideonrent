@@ -33,8 +33,9 @@
                         <p>Today is a great day for car rental service</p>
                     </div>
                     <div class="col-sm-6 notification">
-                        <p><i style="font-size:20px" class="fa-regular fa-message " aria-hidden="true"></i></p>
-                        <p><i style="font-size:20px" class="fa-regular fa-bell"></i></p>
+                        <!-- <p><i style="font-size:20px" class="fa-regular fa-message " aria-hidden="true"></i></p>
+                        <p><i style="font-size:20px" class="fa-regular fa-bell"></i></p> -->
+                        <div onclick="logout()"><img style="margin-top:10px;height:30px" src="<?=base_url(); ?>/assets/images/logout.png" alt=""></div>
                         <div class="profile">
                             <img src="<?php echo base_url(); ?>/assets/images/profile.jpg" alt="">
                         </div>
@@ -191,43 +192,7 @@
                         </table>
                     </div>
 
-                   <script>
-                    function replacement(booking_id){
-                        Swal.fire({
-        title: 'Are You Sure',
-        text: 'Do you want replacement',
-        icon: 'warning', // SweetAlert2 uses 'icon' instead of 'type'
-        showCancelButton: true,
-        cancelButtonColor: '#ccc',
-        confirmButtonColor: '#d33',
-        confirmButtonText: 'replacement'
-    }).then((result) => {
-        if (result.isConfirmed) {  // Use isConfirmed instead of result.value
-            $.post("<?= base_url(); ?>customer/replacement_request/" + booking_id + "/" + status, function(result) {
-                var obj = JSON.parse(result);
-                if (obj.status == 1) {
-                    Swal.fire({
-                        position: "top-end",
-                        icon: "success",  // 'type' is replaced with 'icon'
-                        title: obj.message,
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',  // Adding an error icon for failure
-                        title: obj.message
-                    });
-                }
-            });
-        }
-    });
-                    }
-
-
-
-
-                   </script>
+                   
                     <div class="col-sm-4 ">
                         <div class="last-div" style="padding:10px">
                             <form action="" id="veh_book_form">
@@ -317,6 +282,60 @@
             
           
         }
+        function replacement(booking_id){
+       Swal.fire({
+title: 'Proceed with Replacement',
+text: 'Are you sure you want to proceed with the replacement',
+icon: 'warning', // SweetAlert2 uses 'icon' instead of 'type'
+showCancelButton: true,
+cancelButtonColor: '#ccc',
+confirmButtonColor: '#d33',
+confirmButtonText: 'Yes'
+}).then((result) => {
+if (result.isConfirmed) {  // Use isConfirmed instead of result.value
+$.post("<?= base_url(); ?>customer/replacement_request/" + booking_id + "/" + status, function(result) {
+var obj = JSON.parse(result);
+if (obj.status == 1) {
+   Swal.fire({
+       position: "top-end",
+       icon: "success",  // 'type' is replaced with 'icon'
+       title: obj.message,
+       showConfirmButton: false,
+       timer: 1500
+   });
+} else {
+   Swal.fire({
+       icon: 'error',  // Adding an error icon for failure
+       title: obj.message
+   });
+}
+});
+}
+});
+   }
+
+   function logout(){
+    Swal.fire({
+        title: 'Logout!',
+        text: 'Do you want to logout ?',
+        icon: 'warning', // SweetAlert2 uses 'icon' instead of 'type'
+        showCancelButton: true,
+        cancelButtonColor: '#ccc',
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Logout'
+    }).then((result) => {
+        if (result.isConfirmed) {  
+            $.post("<?= base_url(); ?>logout", function(result) {
+            var obj = JSON.parse(result);
+            if (obj.status == 1) {
+                window.location.href = "<?= base_url(); ?>login";
+            }
+        });
+        }
+    });
+}
+
+       
    </script>
 </body>
 </html>

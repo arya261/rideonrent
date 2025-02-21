@@ -36,8 +36,21 @@
                     <td><?=$b->from_date?></td>
                     <td><?=$b->to_date?></td>
                     <td>
-                        <button  class="accept-btn" onclick="status_update(<?=$b->booking_id?>,1)">Accept</button>
-                        <button class="reject-btn" onclick="status_update(<?=$b->booking_id?>,2)">Reject</button>
+
+                        <?php if($b->status == 0){ ?>
+                        <div class="dropdown">
+                            <button class="dropdown-button" id="dropdownButton<?=$b->booking_id?>">More</button>
+                            <div class="dropdown-menu" id="dropdownMenu<?=$b->booking_id?>">
+                                <a href="#" class="dropdown-item" onclick="status_update(<?=$b->booking_id?>,1)">Accept</a>
+                                <a href="#" class="dropdown-item" onclick="status_update(<?=$b->booking_id?>,2)">Reject</a>
+                           <?php }
+                           else if($b->status == 1){?>
+                           <h5 style="color:green;">ACCEPTED</h5>
+                            <?php }else{ ?>
+                                <h5 style="color:red;">REJECTED</h5>
+                               <?php }?>
+                            </div>
+                        </div>
                     </td>
                 </tr>
                 <?php $sl_no ++;}?>
@@ -54,7 +67,7 @@
             }
             else{
                  var heading ="Reject Booking ?";
-                 var description ="Do You want to delete the booking";
+                 var description ="Do You want to Reject the booking";
             }
             Swal.fire({
         title: heading,
@@ -75,7 +88,10 @@
                         title: obj.message,
                         showConfirmButton: false,
                         timer: 1500
-                    });
+                    }).then(() => {
+    // Reload the page after the timer is finished
+    window.location.reload();
+});
                 } else {
                     Swal.fire({
                         icon: 'error',  // Adding an error icon for failure
@@ -87,6 +103,28 @@
     });
 }
             
+    </script>
+      <script>
+        document.querySelectorAll('.dropdown-button').forEach(button => {
+            button.addEventListener('click', function(event) {
+                var dropdownId = this.id.replace("dropdownButton", "dropdownMenu");
+                var dropdownMenu = document.getElementById(dropdownId);
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    if (menu !== dropdownMenu) {
+                        menu.style.display = 'none'; 
+                    }
+                });
+            
+                dropdownMenu.style.display = (dropdownMenu.style.display === "block") ? "none" : "block";
+            });
+        });
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-button')) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.style.display = 'none';
+                });
+            }
+        });
     </script>
 </body>
 </html>

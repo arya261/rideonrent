@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout Form</title>
     <link rel="stylesheet" href="<?php echo base_url() ?>/assets/css/checkoutform.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
 </head>
 <body>
@@ -13,7 +15,9 @@
     $ordometer_out ='';
     $fuel_out ='';
     $checkout_date = '';
+    $checkout_time = date('H:i:s');
     $expected_checkin_date = '';
+    $expected_checkin_time = date('H:i:s');
     $fixed_charge ='';
     $amount ='';
     $remark ='';
@@ -25,8 +29,10 @@
         foreach($checkout as $c){
             $ordometer_out = $c->ordometer_out;
             $fuel_out = $c->fuel_out;
-            $checkout_date = $c->checkout_date;
-            $expected_checkin_date = $c->expected_checkin_date;
+            $checkout_date = date("Y-m-d", strtotime($c->checkout_date));
+            $checkout_time = date("H:i", strtotime($c->checkout_date));
+            $expected_checkin_date = date("Y-m-d", strtotime($c->expected_checkin_date));
+            $expected_checkin_time = date("H:i", strtotime($c->expected_checkin_date));
             $fixed_charge = $c->fixed_charge;
             $amount = $c->amount;
             $remark = $c->remark;
@@ -35,10 +41,8 @@
             $vehicle_id = $c->vehicle_id;
             $customer_id = $c->customer_id;
         }
-      
     }
     ?>
-
 
 
 
@@ -100,18 +104,18 @@
                 </div>
                 <div class="form-group">
                     <label for="startTime">From Time:</label>
-                    <input type="time" id="startTime" name="from_datetime">
+                    <input type="time" id="startTime" name="from_datetime" value="<?=$checkout_time?>">
                 </div>
             </div>
             <div class="form-row">
                
                 <div class="form-group">
                     <label for="endDate">To Date:</label>
-                    <input type="date" id="endDate" name="expected_checkin_date" value="<?=$expected_checkin_date?>">
+                    <input type="date" class="datepicker" id="endDate" name="expected_checkin_date" value="<?=$expected_checkin_date?>">
                 </div>
                 <div class="form-group">
                     <label for="endTime">To Time:</label>
-                    <input type="time" id="endTime" name="to_datetime">
+                    <input type="time" id="endTime" name="to_datetime" value="<?=$expected_checkin_time?>">
                 </div>
             </div>
             <!-- <div class="form-row">
@@ -124,15 +128,15 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="duration">Fixed Charge:</label>
-                    <input type="text" id="duration" name="fixed_charge" value="<?=$fixed_charge?>">
+                    <input onin type="text" id="fixed_charge" name="fixed_charge" value="<?=$fixed_charge?>" oninput="calculateamount()">
                 </div>
                 <div class="form-group">
                     <label for="duration">Discount:</label>
-                    <input type="text" id="duration" name="discount" value="<?=$discount?>">
+                    <input type="text" id="discount" name="discount" value="<?=$discount?>" oninput="calculateamount()">
                 </div>
                 <div class="form-group">
                     <label for="duration">Total Amount:</label>
-                    <input type="text" id="duration" name="amount" value="<?=$amount?>" >
+                    <input readonly type="text" id="amount" name="amount" value="<?=$amount?>" >
                 </div>
             </div>
             <div class="form-group">
@@ -144,5 +148,21 @@
         </div>
     </div>
     </form>
+    <script>
+        function calculateamount() {
+              const fixedcharges = parseFloat(document.getElementById('fixed_charge').value) || 0;
+              const discount = parseFloat(document.getElementById('discount').value) || 0;
+                if (fixedcharges < 0 ) {
+                    swal('Invalid fixed charge')
+                    document.getElementById('fixed_charge').value = '0';
+                }
+                if (discount < 0 ) {
+                    swal('Invalid discount')
+                    document.getElementById('discount').value = '0';
+                }
+              const amount = fixedcharges - discount;
+              document.getElementById('amount').value = amount.toFixed(2,amount);               
+            }
+    </script>
 </body>
 </html>

@@ -9,12 +9,13 @@
     <link rel="stylesheet" href="<?php echo base_url() ?>/assets/css/main.css">
 </head>
 <body>
+
     <div class="main-container" style="">
     <?php $this->load->view("common/sidebar");?>
         <div class="right-container">
         <div class="header-class">
-            <h2>CHECKOUT LIST</h2>
-            <button class="add-but"><a class="add-a" href="<?=base_url()?>checkout/add/"> + NEW CHECKOUT</a></button>
+            <h2>Checkout List</h2>
+            <a class="add-a" href="<?=base_url()?>checkout/add/"><button style="height:35px; font-weight:600" class="add-but"> + NEW CHECKOUT</button></a>
         </div>
         <table class="checkout-table">
             <thead>
@@ -46,11 +47,16 @@
                     <td><?=$c->fuel_out?></td>
                     <td><?=$c->amount?></td>
                     <td>
-                        <button class="edit-btn" onclick="edit(<?=$c->checkout_id?>)">Edit</button>
-                        <button class="delete-btn" onclick="delete_item(<?=$c->checkout_id?>)">Delete</button>
-                        <?php if($c->checkin_id == ''){?>
-                        <button class="checkin-btn" onclick="checkin(<?=$c->checkout_id?>)">Checkin</button>
-                        <?php }?>
+                        <div class="dropdown">
+                            <button class="dropdown-button" id="dropdownButton<?=$c->checkout_id?>">More</button>
+                            <div class="dropdown-menu" id="dropdownMenu<?=$c->checkout_id?>">
+                                <a href="#" class="dropdown-item" onclick="edit(<?=$c->checkout_id?>)">Edit</a>
+                                <a href="#" class="dropdown-item" onclick="delete_item(<?=$c->checkout_id?>)">Delete</a>
+                                <?php if ($c->checkin_id == '') { ?>
+                                    <a href="#" class="dropdown-item" onclick="checkin(<?=$c->checkout_id?>)">Checkin</a>
+                                <?php } ?>
+                            </div>
+                        </div>
                     </td>
                 </tr>
                 <?php $sno++; } ?>
@@ -68,6 +74,28 @@
         function checkin(checkout_id){
             window.location.href="<?=base_url()?>checkin/add/" +checkout_id;
         }
+    </script>
+   <script>
+        document.querySelectorAll('.dropdown-button').forEach(button => {
+            button.addEventListener('click', function(event) {
+                var dropdownId = this.id.replace("dropdownButton", "dropdownMenu");
+                var dropdownMenu = document.getElementById(dropdownId);
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    if (menu !== dropdownMenu) {
+                        menu.style.display = 'none'; 
+                    }
+                });
+            
+                dropdownMenu.style.display = (dropdownMenu.style.display === "block") ? "none" : "block";
+            });
+        });
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-button')) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.style.display = 'none';
+                });
+            }
+        });
     </script>
 </body>
 </html>

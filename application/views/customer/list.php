@@ -14,7 +14,7 @@
     <div class="main-container">
         <?php $this->load->view("common/sidebar");?>
         <div class="right-container">
-        <h1>Customer List</h1>
+        <h2>Customer List</h2>
         <table>
             <thead>
                 <tr>
@@ -46,11 +46,18 @@
                 <td><?=$c->country.",".$c->state.",".$c->district?></td>
                 <td><?=$c->zip_code?></td>
                 <td>
-                    <?php if($c->verification_status ==1){?>
-                        <button class="block-btn"onclick="block_unblock(<?=$c->login_id?>,0)">Block</button>
-                        <?php }else{?>
-                        <button class="block-btn"onclick="block_unblock(<?=$c->login_id?>,1)">Unblock</button>
-                        <?php }?>
+                   
+                        <div class="dropdown">
+                            <button class="dropdown-button" id="dropdownButton<?=$c->login_id?>">More</button>
+                            <div class="dropdown-menu" id="dropdownMenu<?=$c->login_id?>">
+                                <?php if($c->verification_status == 1){ ?>
+                                <a href="#" class="dropdown-item" onclick="block_unblock(<?=$c->login_id?>,0)">Block</a>
+                                <?php } else{?>
+                                <a href="#" class="dropdown-item" onclick="block_unblock(<?=$c->login_id?>,1)">Unblock</a>
+                                <?php }?>
+                                
+                            </div>
+                        </div>
                         
                     </td>
                     </tr>
@@ -96,6 +103,28 @@
         }
     });
 }
+    </script>
+      <script>
+        document.querySelectorAll('.dropdown-button').forEach(button => {
+            button.addEventListener('click', function(event) {
+                var dropdownId = this.id.replace("dropdownButton", "dropdownMenu");
+                var dropdownMenu = document.getElementById(dropdownId);
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    if (menu !== dropdownMenu) {
+                        menu.style.display = 'none'; 
+                    }
+                });
+            
+                dropdownMenu.style.display = (dropdownMenu.style.display === "block") ? "none" : "block";
+            });
+        });
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-button')) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.style.display = 'none';
+                });
+            }
+        });
     </script>
 
 

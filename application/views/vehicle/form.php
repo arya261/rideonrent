@@ -56,14 +56,15 @@
 
 
     <div class="form-container">
-        <h2>VEHICLE REGISTRATION FORM</h2>
-        <form action="<?=base_url()?>/vehicle/process" method="POST">
+    <img style="height: 70px" src="<?php echo base_url(); ?>/assets/images/car-logo1.png" alt="">
+        <h2 style=" font-size: 1.5rem;">RIDEONRENT</h2>
+        <form action="<?=base_url()?>/vehicle/process" method="POST" enctype="multipart/form-data">
             <input type ="hidden" name="vehicle_id" value="<?=$vehicle_id?>">
             <div class="row">
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="licence_plate">Upload image</label>
-                        <input type="file" id="vehicle" name="veh_image"  >
+                        <input type="file" id="vehicle" name="veh_img"  >
                     </div>
                 </div>
                 <div class="col-sm-4">

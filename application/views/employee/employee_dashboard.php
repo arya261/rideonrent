@@ -26,8 +26,8 @@
                     <p><?=$available_vehicles?></p>
                 </div>
                 <div class="summary-box">
-                    <h3>Total Revenue</h3>
-                    <p>$5000</p>
+                    <h3>Total Customers</h3>
+                    <p><?=$total_customer?></p>
                 </div>
                 <div class="summary-box">
                     <h3>Upcoming Reservations</h3>

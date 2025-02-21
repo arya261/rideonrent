@@ -27,22 +27,35 @@ class Vehicle extends CI_controller {
 
      
      $this->db->where('vehicle_id',$vehicle_id);
+
      $this->db->delete('vehicle');
-     redirect('vehicle');
+     $result['status'] =1;
+     $result['message']='dele';
+     echo json_encode($result);
      }
 
      public function process(){
-     $this->load->library('Custom_Upload');
-     $this->custom_upload->do_upload('veh_image', './uploads/');
-      $data=$_POST;
-      $vehicle_id= $data['vehicle_id'];
-      if($vehicle_id==''){
-      $this->db->insert("vehicle",$data);
-      }
-      else{
-          $this->db->update("vehicle",$data,array('vehicle_id'=>$vehicle_id));
-      }
-      redirect('vehicle');
+          $data=$_POST;
+          $vehicle_id= $data['vehicle_id'];
+          if($vehicle_id==''){
+               $this->db->insert("vehicle",$data);
+               $vehicle_id=$this->db->insert_id();
+          }
+          else{
+               $this->db->update("vehicle",$data,array('vehicle_id'=>$vehicle_id));
+          }
+          $config['allowed_types']= '*';
+          $config['max_size']     = '0';
+          $config['overwrite']    = true;
+          $config['upload_path']  = "./upload/vehicles/";
+          if (!is_dir($config['upload_path'])) {
+              mkdir($config['upload_path'], 0777, true);  
+          }
+          $this->load->library('upload');
+          $_FILES['veh_img']['name'] = "$vehicle_id".'.png';
+          $this->upload->initialize($config);
+          $this->upload->do_upload('veh_img');
+          redirect('vehicle');
       
      }
 }

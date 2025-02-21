@@ -9,7 +9,7 @@ class Upload {
         $this->CI->load->library('upload');
     }
 
-    public function do_upload($field_name, $upload_path = './uploads/', $allowed_types = 'gif|jpg|png|jpeg', $max_size = 2048) {
+    public function do_upload($field_name, $upload_path = './upload/', $allowed_types = 'gif|jpg|png|jpeg', $max_size = 2048) {
         // Configure upload settings
         $config['upload_path'] = $upload_path;
         $config['allowed_types'] = $allowed_types;
