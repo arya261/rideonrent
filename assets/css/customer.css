@@ -59,3 +59,10 @@
         input[type="submit"]:hover {
             background-color: #45a049;
         }
+        .nex-button{height: 10vh;
+            width: 10vh;
+            border-radius: 50%;
+            background-color: #d9d6d6;
+            font-weight: 700;
+            border: none;
+            border: 1px solid #d9d6d6;}

@@ -1,0 +1,8 @@
+.main-container{height: 100vh;width: 100%;display: flex;background: linear-gradient(#ff8b8b,#be4848);}
+.left-container{height: 100vh; width: 50%;display: flex; justify-content: center; align-items: center;}
+.right-container{height: 100vh; width: 50%;background-color: #ffffff;border-radius: 0 0 0 75%;position: relative;}
+.right-container img{position: absolute; top:22vh; left: -160px;}
+.form-class{ background: transparent;border: none; border-bottom: 1px solid white; outline: none;width: 300px;}
+.form-group{margin-bottom:20px !important}
+.sub-btn{ background-color: #000000; color: white;border: none;padding: 5px;width: 100px;font-weight: 900;border-radius: 10px;}
+/* .left-div{padding:100px;display: flex; justify-content: center; align-items: center;height: 100%;} */

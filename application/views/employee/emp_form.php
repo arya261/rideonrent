@@ -144,7 +144,7 @@
         <div class="user-details">
           <!-- Country -->
           <div class="input-box">
-            <h3>customer details</h3>
+           
             <span class="details">country</span>
             <input type="text" name="country" value="<?=$country?>" placeholder="Enter your country" required>
           </div>

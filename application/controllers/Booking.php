@@ -20,9 +20,14 @@ class booking extends CI_controller{
             "status"=>$status  
         ];
         
-        $vehicle_id=$this->db->query("SELECT V.vehicle_id FROM vehicle V LEFT OUTER JOIN booking B ON B.vehicle_id=V.vehicle_id")->row()->vehicle_id;
+        $vehicle_id=$this->db->query("SELECT vehicle_id FROM booking WHERE booking_id =".$booking_id)->row()->vehicle_id;
+        if($status == 1){
+            $veh_status = "BOOKED";
+        }else{
+            $veh_status = "AVAILABLE";
+        }
         $vehicle_array=[
-            'status'=>"BOOKED"
+            'status'=>$veh_status
         ];
         $this->db->update("booking",$booking_array,array('booking_id'=>$booking_id));
         $this->db->update("vehicle",$vehicle_array,array('vehicle_id'=>$vehicle_id));

@@ -10,6 +10,7 @@
         <li><a href="<?=base_url()?>/checkin">Checkin</a></li>
         <li><a href="<?=base_url()?>/customer">Customers</a></li>
         <li><a href="<?=base_url()?>/booking">Bookings</a></li>
+        <li><a href="<?=base_url()?>/employee/list">Employee</a></li>
         <li><a href="<?=base_url()?>">Logout</a></li>
         
     </ul>

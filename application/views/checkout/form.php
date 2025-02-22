@@ -56,7 +56,7 @@
 
     <form action="<?=base_url()?>/checkout/process" id="registration_form" method="post">
         
-    <div class="container">
+    <div class="container" style="height:88vh">
         <!-- Left Section -->
         <div class="left">
         <input type="hidden" name="mode" value="<?=$mode?>" id="">
@@ -65,11 +65,22 @@
             <h3>Select Vehicle</h3>
             <div class="form-group">
                 <label for="vehicle">Vehicle:</label>
-                <select id="vehicle" name="vehicle_id">
+                <select id="vehicle" name="vehicle_id" onchange="change_vehicle(this.value)">
                     <?php foreach($vehicle as $v) { ?>
                         <option <?php if($v->vehicle_id == $vehicle_id) echo "selected"?> value="<?=$v->vehicle_id?>"><?=$v->vehicle_name?></option>
                     <?php }?>
                 </select>
+            </div>
+            <div class="vehicle-card">
+                <div class="vehicle-spec">
+                    <div id="fuel_type" class="fuel-class">PETROL</div>
+                    <div id="veh_color" class="color-class">RED</div>
+                </div>
+                <div class="vehicle-image">
+                    <img id="vehicle_image" style="width:400px; height:240px" src="<?php echo base_url(); ?>upload/vehicles/1.png" alt="">
+                </div>
+                <h4 style="text-align: center;"><strong id="veh_name">SWIFT</strong></h4>
+                <h4 id="license_number" style="text-align:center;position:relative;top:-15px; color:#3b3d3f">6757</h4>
             </div>
             <div class="form-row">
                 <div class="form-group">
@@ -162,6 +173,21 @@
                 }
               const amount = fixedcharges - discount;
               document.getElementById('amount').value = amount.toFixed(2,amount);               
+            }
+            function change_vehicle(vehicle_id){
+                var path                = "<?= base_url(); ?>checkout/change_vehicle/"+vehicle_id;
+            $.post(path,function(information){
+            var data = JSON.parse(information);  
+            console.log(data);
+                              
+            if (data && data.length > 0) {
+                document.getElementById('veh_name').innerHTML = data[0].make+data[0].model;
+                document.getElementById('veh_color').innerHTML =data[0].color;
+                document.getElementById('fuel_type').innerHTML = data[0].fuel_type;
+                document.getElementById('license_number').innerHTML = data[0].license_plate;
+                document.getElementById("vehicle_image").src = "<?php echo base_url(); ?>upload/vehicles/"+data[0].vehicle_id+".png";            
+                }
+            })
             }
     </script>
 </body>

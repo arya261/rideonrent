@@ -42,6 +42,7 @@
                     </div>
                     <?php }?>
                 </div>
+                <?php foreach($booking_vehicles as $c) {?>
                 <div class="row">
                     <div class="col-sm-3 ">
 
@@ -49,8 +50,7 @@
                             <img style="height:7vh" src="<?php echo base_url(); ?>/assets/images/engin1.png" alt="">
                             <div class="" style="line-height:0px">
                                 <h6>Engine</h6>
-                                <h5><strong>2600 cc</strong></h5>
-                                <p>2.0L</p>
+                                <h5><strong id="veh_engine"><?=$c->engine_capacity?> CC</strong></h5>
                             </div>
                         </div>
 
@@ -60,8 +60,7 @@
                             <img style="height:8vh" src="<?php echo base_url(); ?>/assets/images/mileage.png" alt="">
                             <div class="" style="line-height:0px">
                                 <h6>Mileage</h6>
-                                <h5><strong>2600 cc</strong></h5>
-                                <p>2.0L</p>
+                                <h5><strong id="veh_mileage"><?=$c->mileage?> kmpl</strong></h5>
                             </div>
                         </div>
                         
@@ -71,8 +70,7 @@
                             <img style="height:8vh" src="<?php echo base_url(); ?>/assets/images/truck.png" alt="">
                             <div class="" style="line-height:0px">
                                 <h6>Type</h6>
-                                <h5><strong>2600 cc</strong></h5>
-                                <p>2.0L</p>
+                                <h5><strong id="veh_type"><?=$c->vehicle_type?></strong></h5>
                             </div>
                         </div>
                     </div>
@@ -81,8 +79,7 @@
                             <img style="height:8vh" src="<?php echo base_url(); ?>/assets/images/transmission.png" alt="">
                             <div class="" style="line-height:0px">
                                 <h6>Transmission</h6>
-                                <h5><strong>2600 cc</strong></h5>
-                                <p>2.0L</p>
+                                <h5><strong id="veh_transmission"><?=$c->transmission_type?></strong></h5>
                             </div>
                         </div>
                     </div>
@@ -91,41 +88,36 @@
                     <div class="col-sm-8 veh-book" style="">
                         <div class="row">
                             <div class="col-sm-7 veh-book-img">
-                                <h5 style="font-family: serif;margin-top: 1vh;"><strong id="book_veh_name1">Vehicle Name</strong> </h5>
+                                <h5 style="font-family: serif;margin-top: 1vh;"><strong id="book_veh_name1"><?=$booking_vehicle_name?></strong> </h5>
                                 <div class="">
-                                    <img style="height:26vh" src="<?php echo base_url(); ?>/assets/images/car3.png" alt="">
+                                    <img id="vehicle-img" style="height:26vh" src="<?php echo base_url(); ?>upload/vehicles/<?=$min_vehicle_id?>.png" alt="">
                                 </div>
                             </div>
                             <div class="col-sm-5 veh-book-spec">
                                 <div class="veh-spec-det">
                                     <div class="spec-details" style="background-color:#57eb624a">
                                         <img style="height:6vh;" src="<?php echo base_url(); ?>/assets/images/color.png" alt="">
-                                        <p>Red</p>
+                                        <p id="veh-color"><?=$c->color?></p>
                                     </div>
                                     <div class="spec-details"  style="background-color:#ff450038">
                                     <img style="height:6vh" src="<?php echo base_url(); ?>/assets/images/seating.png" alt="">
-                                    <p>5</p>
+                                    <p id="seating-capacity"><?=$c->seating_capacity?></p>
                                     </div>
                                 </div>
                                 <div class="veh-spec-det">
                                     <div class="spec-details" style="background-color:#ffe40024">
                                     <img style="height:6vh" src="<?php echo base_url(); ?>/assets/images/fuel.png" alt="">
-                                    <p>Diesel</p>
+                                    <p id="fuel-type"><?=$c->fuel_type?></p>
                                     </div>
-                                    <div class="spec-details" style="background-color:#c37fb438">
-                                    <img style="height:6vh" src="<?php echo base_url(); ?>/assets/images/fuel.png" alt="">
-                                    <p>Next</p>
+                                    <div class="spec-details" style="background:none">
+                                        <button onclick="next_vehicle()" class="nex-button">NEXT<i class="fa-solid fa-arrow-right"></i></button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row next-veh" >
-                            <div class="change_vehicle">
-                                <button onclick="next_vehicle()">Next<i class="fa-solid fa-arrow-right"></i></button>
-                            </div>
-                        </div>
                         
                     </div>
+                            <?php }?>
                     <div class="col-sm-4">
                         <div class="veh-available">
                             <h6 ><strong>Check Vehicle Availability</strong></h6>
@@ -183,7 +175,11 @@
                                     <td><?=$b->booking_amount?></td>
                                     <td style="color:<?=$color?>"><?=$status?></td>
                                     <td>
+                                        <?php if($b->status==1){?>
                                     <button class="replacement" onclick="replacement(<?=$b->booking_id?>)">Replacement</button>
+                                        <?php } ?>
+
+
              
                                     </td>
                                 </tr>
@@ -196,13 +192,15 @@
                     <div class="col-sm-4 ">
                         <div class="last-div" style="padding:10px">
                             <form action="" id="veh_book_form">
-                                <h6 id="book_veh_name">Vehicle Name</h6>
-                                <input type="hidden" value="" name="vehicle_book_id" id="veh_book_id">
+                                <h6 id="book_veh_name"><?=$booking_vehicle_name?></h6>
+                                <input type="hidden" value="<?=$min_vehicle_id?>" name="vehicle_book_id" id="veh_book_id">
                                 <div class="row">
                                     <div class="col-sm-6"><label class="labels" for="">From date</label><input type="date" name="book_from_date" id=""></div>
                                     <div class="col-sm-6"><label class="labels">To date</label><input type="date" name="book_to_date" id=""></div>
                                 </div>
-                                <h5 style="text-align:right;margin-top:10px"><strong id="book_price">₹ 0.00</strong></h5>
+                                <?php foreach($booking_vehicles as $c) {?>
+                                <h5 style="text-align:right;margin-top:10px"><strong id="book_price">₹ <?=$c->daily_charge?></strong></h5>
+                                <?php }?>
                             </form>
                                 <div class="" style="display:flex; justify-content:center">
                                     <button class="check-but" onclick="book_vehicle()">BOOK NOW</button>
@@ -244,12 +242,22 @@
             var vehicle_id          =document.getElementById('veh_book_id').value;
             var path                = "<?= base_url(); ?>customer/next_vehicle/"+vehicle_id;
             $.post(path,function(information){
-            var data = JSON.parse(information);                    
+            var data = JSON.parse(information);  
+            console.log(data);
+                              
             if (data && data.length > 0) {
                 document.getElementById('book_veh_name').innerHTML = data[0].make+data[0].model;
+                document.getElementById('veh-color').innerHTML =data[0].color;
+                document.getElementById('seating-capacity').innerHTML =data[0].seating_capacity;
+                document.getElementById('fuel-type').innerHTML = data[0].fuel_type;
+                document.getElementById('veh_engine').innerHTML = data[0].engine_capacity+' CC';
+                document.getElementById('veh_mileage').innerHTML = data[0].mileage+' kmpl';
+                document.getElementById('veh_type').innerHTML = data[0].vehicle_type;
+                document.getElementById('veh_transmission').innerHTML = data[0].transmission_type;
                 document.getElementById('book_veh_name1').innerHTML = data[0].make+ data[0].model;
                 document.getElementById('book_price').innerHTML = '₹'+data[0].daily_charge;
-                document.getElementById('veh_book_id').value = data[0].vehicle_id;                
+                document.getElementById('veh_book_id').value = data[0].vehicle_id;    
+                document.getElementById("vehicle-img").src = "<?php echo base_url(); ?>upload/vehicles/"+data[0].vehicle_id+".png";            
                 }
             })
         }

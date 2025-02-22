@@ -97,11 +97,11 @@
                         <label for="vehicle_type">Vehicle Type</label>
                         <select id="vehicle_type" name="vehicle_type"  >
                             <option value="">Select Type</option>
-                            <option <?php if($vehicle_type=='sedan') echo "selected";?>  value="sedan">Sedan</option>
+                            <option <?php if($vehicle_type=='sedan') echo "selected";?>  value="sedan">TRUCK</option>
                             <option <?php if($vehicle_type=='suv') echo "selected";?> value="suv">SUV</option>
-                            <option <?php if($vehicle_type=='truck') echo "selected";?> value="truck">Truck</option>
-                            <option <?php if($vehicle_type=='hatchback') echo "selected";?> value="hatchback">Hatchback</option>
-                            <option <?php if($vehicle_type=='coup') echo "selected";?> value="coupe">Coupe</option>
+                            <option <?php if($vehicle_type=='truck') echo "selected";?> value="truck">TWO WHEELER</option>
+                            <option <?php if($vehicle_type=='hatchback') echo "selected";?> value="hatchback">JEEP</option>
+                            <option <?php if($vehicle_type=='coup') echo "selected";?> value="coupe">GOODS</option>
                         </select>
                     </div>
                 </div>

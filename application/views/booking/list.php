@@ -76,7 +76,7 @@
         showCancelButton: true,
         cancelButtonColor: '#ccc',
         confirmButtonColor: '#d33',
-        confirmButtonText: 'Update'
+        confirmButtonText: 'Accept'
     }).then((result) => {
         if (result.isConfirmed) {  // Use isConfirmed instead of result.value
             $.post("<?= base_url(); ?>booking/update_status/" + booking_id + "/" + status, function(result) {

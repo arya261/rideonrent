@@ -31,10 +31,20 @@
             $datetime2 = new DateTime($to_date);
             $interval = $datetime1->diff($datetime2);
             $date_difference =  $interval->days; 
+            if($date_difference <= 0){
+                $date_difference =1;
+            } 
             // echo $date_difference; exit();
             $b->booking_amount = $date_difference * $b->daily_charge;
         }
-        // echo '<pre>'; print_r($booking); exit();
+        $data['min_vehicle_id'] = $this->db->query("SELECT MIN(vehicle_id) AS min_veh_id FROM vehicle")->row()->min_veh_id;
+        // echo $data['min_vehicle_id']; exit();
+        $booking_vehicle  =$this->db->query("SELECT V.* FROM vehicle V WHERE vehicle_id = ".$data['min_vehicle_id'])->result();
+        foreach($booking_vehicle as $b){
+            $data['booking_vehicle_name'] = $b->make . "" .$b->model;  
+              }
+              $data['booking_vehicles'] = $booking_vehicle;
+        // echo '<pre>'; print_r($booking_vehicle); exit();
 		$this->load->view("customer/dashboard",$data);
 
      }
@@ -87,7 +97,7 @@
             $vehicle_id=$min_vehicle_id;
          }
          $vehicle_id = $vehicle_id+1;
-         if($vehicle_id == $max_vehicle_id){
+         if($vehicle_id == $max_vehicle_id+1){
             $vehicle_id = $min_vehicle_id;
         }
         $result     = $this->db->query("SELECT * FROM vehicle WHERE vehicle_id = ".$vehicle_id)->result();
@@ -112,6 +122,11 @@
         ];
         // echo '<pre>'; print_r($booking_array);
         $this->db->insert('booking',$booking_array);
+        $veh_status = "RESERVED";
+        $vehicle_array=[
+            'status'=>$veh_status
+        ];
+        $this->db->update("vehicle",$vehicle_array,array('vehicle_id'=>$vehicle_id));
         echo json_encode ($result);
      }
      function replacement_request($booking_id){

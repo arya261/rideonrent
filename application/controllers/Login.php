@@ -33,6 +33,7 @@ class Login extends CI_Controller {
 				'login_id'		=>$login_id,
 				'login_email'	=>$login_email
 			];
+			// $employee_type = $this->db->query("SELECT type FROM login WHERE login_id =".$login_id)->row()->type;
 			// print_r($session_array);exit();
 			
 			$this->session->set_userdata($session_array);

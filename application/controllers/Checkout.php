@@ -10,7 +10,7 @@ class Checkout extends CI_Controller{
   }            
   public function add(){
     $data["mode"]="add";
-    $vehicle  =$this->db->query("SELECT V.make,V.model,V.vehicle_id,V.license_plate FROM vehicle V WHERE V.status = 'AVAILABLE'")->result();
+    $vehicle  =$this->db->query("SELECT V.make,V.model,V.vehicle_id,V.license_plate FROM vehicle V WHERE V.status = 'AVAILABLE' OR V.status='BOOKED'")->result();
     foreach($vehicle as $v){
       $v->vehicle_name   = $v->make." " .$v->model." " .$v->license_plate;
     }
@@ -92,6 +92,10 @@ class Checkout extends CI_Controller{
       $this->db->update('checkout',$checkout,array('checkout_id'=>$checkout_id));
     }
     redirect("checkout");
+  }
+  function change_vehicle($vehicle_id){
+    $result = $this->db->query("SELECT * FROM vehicle WHERE vehicle_id=".$vehicle_id)->result();
+    echo json_encode($result);
   }
 }
 

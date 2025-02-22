@@ -13,8 +13,10 @@
         foreach($checkin as $c){
             $ordometer_out = $c->ordometer_out;
             $fuel_out = $c->fuel_out;
-            $checkout_date = $c->checkout_date;
-            $expected_checkin_date = $c->expected_checkin_date;
+            $checkout_date = date("Y-m-d", strtotime($c->checkout_date));
+            $checkout_time = date("H:i:s", strtotime($c->checkout_date));
+            $expected_checkin_date = date("Y-m-d", strtotime($c->expected_checkin_date));
+            $expected_checkin_time = date("H:i", strtotime($c->expected_checkin_date));
             $fixed_charge = $c->fixed_charge;
             $amount = $c->amount;
             $remark = $c->remark;
@@ -27,13 +29,16 @@
             $license_plate = $c->license_plate;
             $customer_name = $c->customer_name;
             $checkin_id = '';
+            $checkout_time;
     }}
     else{
         foreach($checkin as $c){
             $ordometer_out = $c->ordometer_in;
             $fuel_out = $c->fuel_in;
-            $checkout_date = $c->checkout_date;
-            $expected_checkin_date = $c->checkin_date;
+            $checkout_date = date("Y-m-d", strtotime($c->checkout_date));
+            $checkout_time = date("H:i", strtotime($c->checkout_date));
+            $expected_checkin_date = date("Y-m-d", strtotime($c->checkin_date));
+            $expected_checkin_time = date("H:i", strtotime($c->checkin_date));
             $fixed_charge = $c->fixed_charge;
             $amount = $c->amount;
             $remark = $c->notes;
@@ -106,7 +111,7 @@
                 </div>
                 <div class="form-group">
                     <label for="startTime">From Time:</label>
-                    <input type="time" id="startTime" name="from_datetime">
+                    <input type="time" id="startTime" name="from_datetime" value="<?=$checkout_time?>">
                 </div>
             </div>
             <div class="form-row">
@@ -117,7 +122,7 @@
                 </div>
                 <div class="form-group">
                     <label for="endTime">To Time:</label>
-                    <input type="time" id="endTime" name="to_datetime">
+                    <input type="time" id="endTime" name="to_datetime" value="<?=$expected_checkin_time?>">
                 </div>
             </div>
             <!-- <div class="form-row">
