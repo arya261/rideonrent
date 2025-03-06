@@ -59,8 +59,9 @@
 
   
   <div class="container">
+      <img style="height: 70px" src="<?php echo base_url(); ?>/assets/images/car-logo1.png" alt="">
     <!-- Title section -->
-    <div class="title">Registration</div>
+    <div class="title">RIDEONRENT</div>
     <div class="content">
       <!-- Registration form -->
       <form action="<?=base_url()?>/employee/process" id="registration_form" method="post">
@@ -75,12 +76,13 @@
             <span class="details">Full Name</span>
             <input type="text" name="fullname" value="<?=$fullname?>"  placeholder="Enter your name" required>
           </div> 
-
-
           <div class="input-box">
-            <span class="details">DOB</span>
-            <input type="text" name="DOB" placeholder="DD/MM/YY format"  required>
+            <span class="details">Email</span>
+            <input type="text" name="email" value="<?=$email?>"  placeholder="Enter your email" required>
           </div>
+
+
+          
        
           <div class="input-box">
             <span class="details">Phone Number</span>
@@ -88,26 +90,19 @@
           </div>
 
           
-        <div class="gender-details">
-         <strong>Gender</strong>
-         <select name="gender" required>
-            <option <?php if($gender=='male') echo "selected";?> value="male">Male</option>
-            <option <?php if($gender=='female')echo "selected";?> value="female">female</option>
-            <option <?php if($gender=='others')echo "selected";?> value="others">others</option>
-         </select>
-        </div>
-        
-
-         
-          <div class="input-box">
-            <span class="details">Email</span>
-            <input type="text" name="email" value="<?=$email?>"  placeholder="Enter your email" required>
-          </div>
-        
-
           <div class="input-box">
             <span class="details">Password</span>
             <input type="password" name="password"  value="<?=$password?>" id="password" placeholder="Enter your password" required>
+          </div>
+        
+
+         
+         
+        
+
+          <div class="input-box">
+            <span class="details">DOB</span>
+            <input type="text" name="DOB" placeholder="DD/MM/YY format"  required>
           </div>
         
 
@@ -121,7 +116,14 @@
             <span class="details">department</span>
             <input type="text" name="department" value="<?=$department?>">
           </div>
-
+          <div class="gender-details">
+         <strong>Gender</strong>
+         <select name="gender" required>
+            <option <?php if($gender=='male') echo "selected";?> value="male">Male</option>
+            <option <?php if($gender=='female')echo "selected";?> value="female">female</option>
+            <option <?php if($gender=='others')echo "selected";?> value="others">others</option>
+         </select>
+        </div>
           
 
           <div class="input-box">
@@ -177,11 +179,10 @@
           </div>
         </div>
 
-        <!-- Submit button -->
-        <div class="button">
-          <button type="submit" 
+
+          <button class="button" type="submit" 
            value="">submit</button>
-        </div>
+
       </form>
     </div>
   </div>
@@ -212,7 +213,7 @@
 }
 
 body {
-  height: 300vh;
+  
   display: flex;
   justify-content: center;
   align-items: center;
@@ -221,7 +222,7 @@ body {
 }
 
 .container {
-  max-width: 1000px;
+  max-width: 1532px;
   width: 200%;
   background-color: #fff;
   padding: 25px 30px;
@@ -323,6 +324,7 @@ form input[type="radio"] {
 form .button {
   height: 45px;
   margin: 35px 0;
+  margin-left: 72%;
 }
 
 form .button input {
@@ -351,7 +353,7 @@ form .user-details .input-box {
 
 /* Address Fields */
 form .user-details .input-box {
-  width: 100%;
+  width: 42%;
 }
 
 /* Responsive media query for smaller devices */
@@ -381,6 +383,19 @@ form .user-details .input-box {
     flex-direction: column;
   }
 }
+.button{
+  background-color: #18066e69;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 20px;
+    width:16%;
+    margin-left: 45%;
+}
+
 
 
   </style>

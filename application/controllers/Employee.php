@@ -127,6 +127,21 @@ class Employee extends CI_Controller {
         }
             redirect("employee/list");
     }
+    public function delete($emp_id){
+        $this->db->where('emp_id',$emp_id);
+        $query = $this->db->get('employee');
+        $result = $query->row();
+        
+
+   
+   $this->db->where('emp_id',$emp_id);
+
+   $this->db->delete('employee');
+   $results['status'] =1;
+   $results['message']='delete';
+   echo json_encode($results);
+   }
+      
     function block_unblock($login_id,$status){
         $login_array= [
             "verification_status"=>  $status

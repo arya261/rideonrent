@@ -29,8 +29,8 @@ class Vehicle extends CI_controller {
      $this->db->where('vehicle_id',$vehicle_id);
 
      $this->db->delete('vehicle');
-     $result['status'] =1;
-     $result['message']='dele';
+     $results['status'] =1;
+     $results['message']='dele';
      echo json_encode($result);
      }
 

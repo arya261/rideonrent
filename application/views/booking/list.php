@@ -16,6 +16,8 @@
             <h2>Booking List</h2>
            
         </div>
+        <div style="overflow-y: scroll;height:80vh;">
+
         <table>
             <thead>
                 <tr>
@@ -27,6 +29,7 @@
                     <th>Action</th>
                 </tr>
             </thead>
+            
             <tbody>
                 
             <?php $sl_no=1; foreach($booking as $b){?>
@@ -43,20 +46,25 @@
                             <div class="dropdown-menu" id="dropdownMenu<?=$b->booking_id?>">
                                 <a href="#" class="dropdown-item" onclick="status_update(<?=$b->booking_id?>,1)">Accept</a>
                                 <a href="#" class="dropdown-item" onclick="status_update(<?=$b->booking_id?>,2)">Reject</a>
+                                </div>
+                        </div>
+                                 
                            <?php }
                            else if($b->status == 1){?>
-                           <h5 style="color:green;">ACCEPTED</h5>
+                           <button onclick="checkout(<?=$b->booking_id?>)">Checkout</button>
+                           
+
                             <?php }else{ ?>
                                 <h5 style="color:red;">REJECTED</h5>
                                <?php }?>
-                            </div>
-                        </div>
+                            
                     </td>
                 </tr>
                 <?php $sl_no ++;}?>
                 
             </tbody>
         </table>
+        </div>
     </div>
     </div>
     <script>
@@ -125,6 +133,10 @@
                 });
             }
         });
+        function checkout(booking_id){
+            window.location.href="<?=base_url()?>/checkout/make_from_booking/" +booking_id;
+            
+        }
     </script>
 </body>
 </html>

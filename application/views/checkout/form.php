@@ -24,6 +24,7 @@
     $discount = '';
     $vehicle_id = '';
     $customer_id = '';
+    $booking_id = '';
 
     if($mode =='edit'){
         foreach($checkout as $c){
@@ -40,6 +41,24 @@
             $checkout_id = $c->checkout_id;
             $vehicle_id = $c->vehicle_id;
             $customer_id = $c->customer_id;
+            $booking_id = $c->booking_id;
+        }
+    }else if($mode == "makefrom_booking"){
+        foreach($booking_details as $c){
+            $ordometer_out = '';
+            $fuel_out = '';
+            $checkout_date = date("Y-m-d", strtotime($c->from_date));
+            $checkout_time = date("H:i", strtotime($c->from_date));
+            $expected_checkin_date = date("Y-m-d", strtotime($c->to_date));
+            $expected_checkin_time = date("H:i", strtotime($c->to_date));
+            $fixed_charge = 0;
+            $amount = 0;
+            $remark = '';
+            $discount = 0;
+            $checkout_id = '';
+            $vehicle_id = $c->vehicle_id;
+            $customer_id = $c->customer_id;
+            $booking_id = $c->booking_id;
         }
     }
     ?>
@@ -61,6 +80,7 @@
         <div class="left">
         <input type="hidden" name="mode" value="<?=$mode?>" id="">
         <input type="hidden" name="checkout_id" value="<?=$checkout_id?>" id="">
+        <input type="hidden" name="booking_id" value="<?=$booking_id?>" id="">
         
             <h3>Select Vehicle</h3>
             <div class="form-group">

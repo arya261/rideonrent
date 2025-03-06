@@ -131,8 +131,8 @@
                                         </select>
                                     </form>
                                 </div>
-                                <div class="col-sm-6"><label class="labels" for="">From date</label><input type="date" name="" id=""></div>
-                                <div class="col-sm-6"><label class="labels">To date</label><input type="date" name="" id=""></div>
+                                <div class="col-sm-6"><label class="labels" for="">From date</label><input type="date" name="" id="avb_from_date"></div>
+                                <div class="col-sm-6"><label class="labels">To date</label><input type="date" name="" id="avb_to_date"></div>
                                 <div class="col-sm-12 check-avb"><button onclick="check_veh_availability()" class="check-but">CHECK AVAILABILITY</button></div>
                             </div>
                         </div>
@@ -195,8 +195,8 @@
                                 <h6 id="book_veh_name"><?=$booking_vehicle_name?></h6>
                                 <input type="hidden" value="<?=$min_vehicle_id?>" name="vehicle_book_id" id="veh_book_id">
                                 <div class="row">
-                                    <div class="col-sm-6"><label class="labels" for="">From date</label><input type="date" name="book_from_date" id=""></div>
-                                    <div class="col-sm-6"><label class="labels">To date</label><input type="date" name="book_to_date" id=""></div>
+                                    <div class="col-sm-6"><label class="labels" for="">From date</label><input type="date" name="book_from_date" id="book_from_date"></div>
+                                    <div class="col-sm-6"><label class="labels">To date</label><input type="date" name="book_to_date" id="book_to_date"></div>
                                 </div>
                                 <?php foreach($booking_vehicles as $c) {?>
                                 <h5 style="text-align:right;margin-top:10px"><strong id="book_price">₹ <?=$c->daily_charge?></strong></h5>
@@ -213,6 +213,25 @@
     </div>
    <script>
         function check_veh_availability(){
+
+
+
+            var from_date       = $('#avb_from_date').val();
+                var to_date         = $('#avb_to_date').val();
+                var new_from_date   = parseDate(from_date);
+                var new_to_date     = parseDate(to_date);
+                console.log(from_date,to_date);
+                
+                var diff            = (new_from_date.getTime() - new_to_date.getTime()) / (1000 * 60 * 60 * 24);
+                console.log(diff);
+
+                if(diff >0){
+                    Swal.fire("To date must be greater than from date")
+                    error = 1;
+                    return false;
+                }
+                
+                else{
             var form_data = $('#veh_avb_form').serialize();
             $.ajax({
             url: "<?= base_url(); ?>customer/vehicle_availability/",  // URL to send the request to
@@ -238,6 +257,7 @@
             }
         });
         }
+    }
         function next_vehicle(){
             var vehicle_id          =document.getElementById('veh_book_id').value;
             var path                = "<?= base_url(); ?>customer/next_vehicle/"+vehicle_id;
@@ -261,7 +281,26 @@
                 }
             })
         }
+        function parseDate(dateStr) {
+                var parts = dateStr.split("-");
+                return new Date(parts[2], parts[1] - 1, parts[0]);
+            }
         function book_vehicle(){
+            var from_date       = $('#book_from_date').val();
+                var to_date         = $('#book_to_date').val();
+                var new_from_date   = parseDate(from_date);
+                var new_to_date     = parseDate(to_date);
+                console.log(from_date,to_date);
+                
+                var diff            = (new_from_date.getTime() - new_to_date.getTime()) / (1000 * 60 * 60 * 24);
+                console.log(diff);
+                // return false;
+                
+                if(diff >0){
+                    Swal.fire("To date must be greater than from date")
+                    error = 1;
+                    return false;
+                }else{
             var form_data = $('#veh_book_form').serialize();
             console.log(form_data); 
             $.ajax({
@@ -290,6 +329,7 @@
             
           
         }
+    }
         function replacement(booking_id){
        Swal.fire({
 title: 'Proceed with Replacement',
@@ -342,6 +382,7 @@ if (obj.status == 1) {
         }
     });
 }
+        
 
        
    </script>

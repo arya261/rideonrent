@@ -13,7 +13,7 @@
         <!-- Main content area -->
         <div class="right-container">
             <header>
-                <h1>Welcome Arya!</h1>
+                <h1>Welcome Admin!</h1>
             </header>
 
             <section class="dashboard-summary">

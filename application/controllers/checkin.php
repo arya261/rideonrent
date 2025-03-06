@@ -28,10 +28,20 @@ $data["checkin"]=$checkin;
     $this->load->view("checkin/form",$data);
   }
   public function delete($checkin_id){
-    // echo $checkin_id; exit();
-    $this->db->delete("checkin",array('checkin_id'=>$checkin_id));
-    redirect("checkin");
-  }
+    $this->db->where('checkin_id',$checkin_id);
+    $query = $this->db->get('checkin');
+    $result = $query->row();
+    
+
+
+$this->db->where('checkin_id',$checkin_id);
+
+$this->db->delete('checkin');
+$results['status'] =1;
+$results['message']='delete';
+echo json_encode($results);
+}
+  
   public function process(){
     $data=$_POST;
     // print_r($data);exit();

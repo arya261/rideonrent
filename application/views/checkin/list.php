@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkin List</title>
     <link rel="stylesheet" href="<?php echo base_url() ?>/assets/css/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <div class="main-container" style="">
@@ -65,7 +67,30 @@
             window.location.href="<?=base_url()?>checkin/edit/" +checkin_id;
         }
         function delete_item(checkin_id){
-            window.location.href="<?=base_url()?>checkin/delete/"  +checkin_id;
+            Swal.fire({
+        title: 'Are you sure?',
+         
+        icon: 'warning', // SweetAlert2 uses 'icon' instead of 'type'
+        showCancelButton: true,
+        cancelButtonColor: '#ccc',
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then((result) => {
+        if (result.isConfirmed) {  // Use isConfirmed instead of result.value
+            $.post("<?= base_url(); ?>checkin/delete/"+checkin-id , function(result) {
+                var obj = JSON.parse(result);
+                if (obj.status == 1) {
+                  
+window.location.reload();
+                } else {
+                    Swal.fire({
+                        icon: 'error',  // Adding an error icon for failure
+                        title: obj.message
+                    });
+                }
+            });
+        }
+    });
         }
     </script>
      <script>

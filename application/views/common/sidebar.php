@@ -8,6 +8,7 @@
         <li><a href="<?=base_url()?>/vehicle">Vehicles</a></li>
         <li><a href="<?=base_url()?>/checkout">Checkout</a></li>
         <li><a href="<?=base_url()?>/checkin">Checkin</a></li>
+        <li><a href="<?=base_url()?>/replacement">Replacement</a></li>
         <li><a href="<?=base_url()?>/customer">Customers</a></li>
         <li><a href="<?=base_url()?>/booking">Bookings</a></li>
         <li><a href="<?=base_url()?>/employee/list">Employee</a></li>

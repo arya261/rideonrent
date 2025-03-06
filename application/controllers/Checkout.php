@@ -2,15 +2,22 @@
 
 class Checkout extends CI_Controller{
   public function index(){
-    $checkout=$this->db->query("SELECT C.*,S.customer_name,V.model,V.make,V.license_plate,P.checkin_id FROM checkout C LEFT OUTER JOIN customer S ON C.customer_id=S.customer_id LEFT OUTER JOIN vehicle V ON V.vehicle_id = C.vehicle_id LEFT OUTER JOIN checkin P ON P.checkout_id = C.checkout_id " )->result();
+    $checkout=$this->db->query("SELECT C.*,S.customer_name,V.model,V.make,V.license_plate,P.checkin_id,B.replacement_request FROM checkout C LEFT OUTER JOIN customer S ON C.customer_id=S.customer_id LEFT OUTER JOIN vehicle V ON V.vehicle_id = C.vehicle_id LEFT OUTER JOIN checkin P ON P.checkout_id = C.checkout_id LEFT OUTER JOIN booking B ON B.booking_id = C.booking_id " )->result();
     // echo '<pre>'; print_r($checkout);exit();
     $data['checkout']=$checkout;
+    $vehicle  =$this->db->query("SELECT V.make,V.model,V.vehicle_id,V.license_plate FROM vehicle V WHERE V.status = 'AVAILABLE'")->result();
+    foreach($vehicle as $v){
+      $v->vehicle_name   = $v->make." " .$v->model." " .$v->license_plate;
+    }
+    $data["vehicle"]=$vehicle;
     $this->load->view("checkout/list", $data);
 
-  }            
+  }
+  
+  
   public function add(){
     $data["mode"]="add";
-    $vehicle  =$this->db->query("SELECT V.make,V.model,V.vehicle_id,V.license_plate FROM vehicle V WHERE V.status = 'AVAILABLE' OR V.status='BOOKED'")->result();
+    $vehicle  =$this->db->query("SELECT V.make,V.model,V.vehicle_id,V.license_plate FROM vehicle V WHERE V.status = 'AVAILABLE'")->result();
     foreach($vehicle as $v){
       $v->vehicle_name   = $v->make." " .$v->model." " .$v->license_plate;
     }
@@ -25,10 +32,13 @@ class Checkout extends CI_Controller{
   }
   public function edit($checkout_id){
     $checkout=$this->db->query("SELECT * FROM checkout WHERE checkout_id=".$checkout_id)->result();
+    foreach($checkout as $c){
+      $vehicle_id = $c->vehicle_id;
+    }
     $data['checkout']= $checkout;
     // echo '<pre>'; print_r($checkout); exit();
     $data["mode"]="edit";
-    $vehicle  =$this->db->query("SELECT V.make,V.model,V.vehicle_id,V.license_plate FROM vehicle V")->result();
+    $vehicle  =$this->db->query("SELECT V.make,V.model,V.vehicle_id,V.license_plate FROM vehicle V WHERE V.status = 'AVAILABLE' UNION SELECT B.make,B.model,B.vehicle_id,B.license_plate FROM vehicle B WHERE B.vehicle_id =".$vehicle_id)->result();
     foreach($vehicle as $v){
       $v->vehicle_name   = $v->make." " .$v->model." " .$v->license_plate;
     }
@@ -37,12 +47,41 @@ class Checkout extends CI_Controller{
     $data["vehicle"]=$vehicle;
     $this->load->view("checkout/form",$data);
   }
-  public function delete($checkout_id){
-    $this->db->query("DELETE FROM checkout where checkout_id=$checkout_id");
-    redirect("checkout");
+  function make_from_booking($booking_id){
+    $booking_details  = $this->db->query("SELECT * FROM booking WHERE booking_id=".$booking_id)->result();
+    foreach($booking_details as $c){
+      $vehicle_id = $c->vehicle_id;
+    }
+    $data["mode"]="makefrom_booking";
+    $vehicle  =$this->db->query("SELECT V.make,V.model,V.vehicle_id,V.license_plate FROM vehicle V WHERE V.status = 'AVAILABLE' UNION SELECT B.make,B.model,B.vehicle_id,B.license_plate FROM vehicle B WHERE B.vehicle_id =".$vehicle_id)->result();
+    foreach($vehicle as $v){
+      $v->vehicle_name   = $v->make." " .$v->model." " .$v->license_plate;
+    }
+    $customer =$this->db->query("SELECT customer_name,customer_id FROM customer")->result();
+    $data["booking_details"]=$booking_details;
+    $data["customer"]=$customer;
+    $data["vehicle"]=$vehicle;
+    $this->load->view("checkout/form",$data);
+    // echo '<pre>'; print_r($booking_details);
+    
   }
+    public function delete($checkout_id){
+    $this->db->where('checkout_id',$checkout_id);
+    $query = $this->db->get('checkout');
+    $result = $query->row();
+  
+
+
+$this->db->where('checkout_id',$checkout_id);
+
+$this->db->delete('checkout');
+$results['status'] =1;
+$results['message']='delete';
+echo json_encode($results);
+}
   public function process(){
     $data=$_POST;
+    // echo '<pre>'; print_r($data); exit();
     $mode=$data['mode'];
     $checkout_id=$data['checkout_id'];
     // echo '<pre>'; print_r($data);exit();
@@ -79,14 +118,15 @@ class Checkout extends CI_Controller{
         "fixed_charge"    =>$data["fixed_charge"],
         "discount"        =>$data["discount"],
         "amount"          =>$data["fixed_charge"] - $data['discount'],
-        "remark"          =>$data["remark"]
+        "remark"          =>$data["remark"],
+        "booking_id"      =>$data["booking_id"]
     ];
     $vehicle_array = [
       'status' =>'INSERVICE'
     ];
     $this->db->update('vehicle',$vehicle_array,array('vehicle_id'=>$data['vehicle_id']));
     // print_r($data);
-    if($mode == 'add'){
+    if($mode == 'add' || $mode == 'makefrom_booking' ){
       $this->db->insert("checkout", $checkout);
     }else{
       $this->db->update('checkout',$checkout,array('checkout_id'=>$checkout_id));
