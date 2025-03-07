@@ -11,8 +11,8 @@
         <li><a href="<?=base_url()?>/replacement">Replacement</a></li>
         <li><a href="<?=base_url()?>/customer">Customers</a></li>
         <li><a href="<?=base_url()?>/booking">Bookings</a></li>
-        <li><a href="<?=base_url()?>/employee/list">Employee</a></li>
-        <li><a href="<?=base_url()?>">Logout</a></li>
+        <?php if($emp_type == 'ADMIN'){ ?><li><a href="<?=base_url()?>/employee/list">Employee</a></li><?php }?>
+        <li><a href="#" onclick="logout()">Logout</a></li>
         
     </ul>
 </div>
@@ -24,3 +24,27 @@
         .dropdown-item {color: black;text-decoration: none;display: block;    padding: 10px 0 5px 10px; text-align: left; }
         .dropdown-item:hover {background-color: #f1f1f1;}
     </style>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    function logout(){
+    Swal.fire({
+        title: 'Logout!',
+        text: 'Do you want to logout ?',
+        icon: 'warning', // SweetAlert2 uses 'icon' instead of 'type'
+        showCancelButton: true,
+        cancelButtonColor: '#ccc',
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Logout'
+    }).then((result) => {
+        if (result.isConfirmed) {  
+            $.post("<?= base_url(); ?>logout", function(result) {
+            var obj = JSON.parse(result);
+            if (obj.status == 1) {
+                window.location.href = "<?= base_url(); ?>login";
+            }
+        });
+        }
+    });
+}</script>

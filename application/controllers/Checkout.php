@@ -2,7 +2,17 @@
 
 class Checkout extends CI_Controller{
   public function index(){
+    $this->load->library('session');
+    $login_id = $this->session->userdata("login_id");
+    if($login_id == ''){redirect("login");}
+    $emp_type = $this->db->query("SELECT type FROM login WHERE login_id =".$login_id)->row()->type;
+    $data['emp_type'] = $emp_type;
     $checkout=$this->db->query("SELECT C.*,S.customer_name,V.model,V.make,V.license_plate,P.checkin_id,B.replacement_request FROM checkout C LEFT OUTER JOIN customer S ON C.customer_id=S.customer_id LEFT OUTER JOIN vehicle V ON V.vehicle_id = C.vehicle_id LEFT OUTER JOIN checkin P ON P.checkout_id = C.checkout_id LEFT OUTER JOIN booking B ON B.booking_id = C.booking_id " )->result();
+    foreach ($checkout as $c){
+      $rep_count=$this->db->query("SELECT rep_id FROM replacement WHERE checkout_id=".$c->checkout_id)->result();
+      $c->rep_count=count($rep_count);
+
+    }
     // echo '<pre>'; print_r($checkout);exit();
     $data['checkout']=$checkout;
     $vehicle  =$this->db->query("SELECT V.make,V.model,V.vehicle_id,V.license_plate FROM vehicle V WHERE V.status = 'AVAILABLE'")->result();

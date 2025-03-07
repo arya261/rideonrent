@@ -4,16 +4,15 @@
 class booking extends CI_controller{
 
     public function index(){
+        $this->load->library('session');
+        $login_id = $this->session->userdata("login_id");
+        if($login_id == ''){redirect("login");}
+        $emp_type = $this->db->query("SELECT type FROM login WHERE login_id =".$login_id)->row()->type;
+        $data['emp_type'] = $emp_type;
         $booking=$this->db->query("SELECT B.*,S.customer_name,S.customer_id,V.model,V.make,V.vehicle_id FROM booking B LEFT OUTER JOIN customer S ON B.customer_id=S.customer_id LEFT OUTER JOIN vehicle V ON V.vehicle_id=B.vehicle_id")->result();
         // print_r($booking);
         $data["booking"]=$booking;
-
-
-
-
         $this->load->view("booking/list",$data);
-
-
     }
     public function update_status($booking_id,$status){
         $booking_array= [

@@ -175,7 +175,7 @@
                                     <td><?=$b->booking_amount?></td>
                                     <td style="color:<?=$color?>"><?=$status?></td>
                                     <td>
-                                        <?php if($b->status==1){?>
+                                        <?php if($b->status==1 && $b->replacement_request==''){?>
                                     <button class="replacement" onclick="replacement(<?=$b->booking_id?>)">Replacement</button>
                                         <?php } ?>
 
@@ -195,11 +195,13 @@
                                 <h6 id="book_veh_name"><?=$booking_vehicle_name?></h6>
                                 <input type="hidden" value="<?=$min_vehicle_id?>" name="vehicle_book_id" id="veh_book_id">
                                 <div class="row">
-                                    <div class="col-sm-6"><label class="labels" for="">From date</label><input type="date" name="book_from_date" id="book_from_date"></div>
-                                    <div class="col-sm-6"><label class="labels">To date</label><input type="date" name="book_to_date" id="book_to_date"></div>
+                                    <div class="col-sm-6"><label class="labels" for="">From date</label><input type="date" name="book_from_date" id="book_from_date" oninput="update_bookingamount(this.value,0)"></div>
+                                    <div class="col-sm-6"><label class="labels">To date</label><input type="date" name="book_to_date" id="book_to_date" oninput="update_bookingamount(0,this.value)"></div>
                                 </div>
                                 <?php foreach($booking_vehicles as $c) {?>
                                 <h5 style="text-align:right;margin-top:10px"><strong id="book_price">₹ <?=$c->daily_charge?></strong></h5>
+                                <input type="hidden" name="" id="booking_day_price" value="<?=$c->daily_charge?>">
+                                <input type="hidden" name="total_price" id="total_price" value="">
                                 <?php }?>
                             </form>
                                 <div class="" style="display:flex; justify-content:center">
@@ -212,52 +214,58 @@
         </div>
     </div>
    <script>
-        function check_veh_availability(){
-
-
-
-            var from_date       = $('#avb_from_date').val();
-                var to_date         = $('#avb_to_date').val();
-                var new_from_date   = parseDate(from_date);
-                var new_to_date     = parseDate(to_date);
-                console.log(from_date,to_date);
-                
-                var diff            = (new_from_date.getTime() - new_to_date.getTime()) / (1000 * 60 * 60 * 24);
-                console.log(diff);
-
-                if(diff >0){
-                    Swal.fire("To date must be greater than from date")
-                    error = 1;
-                    return false;
-                }
-                
-                else{
-            var form_data = $('#veh_avb_form').serialize();
-            $.ajax({
-            url: "<?= base_url(); ?>customer/vehicle_availability/",  // URL to send the request to
-            type: "POST",  // HTTP method (POST)
-            data: form_data,  // Data to send with the request
-            success: function(result) {  // Callback function on success
-                var obj = JSON.parse(result);  // Parse the JSON response
-
-                if (obj.status == 1) {  // If status is 1, success
-                    Swal.fire({
-                        position: "top-end",
-                        icon: "success",  // Use 'icon' instead of 'type' for SweetAlert2
-                        title: obj.message,
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                } else {  // If status is not 1, error
-                    swal(obj.message);  // Display error message
-                }
-            },
-            error: function(xhr, status, error) {  // Callback function for error
-                console.log("AJAX Error: " + status + ": " + error);  // Log error if any
+        function update_bookingamount(){
+            var from_date       = $('#book_from_date').val();
+            var to_date         = $('#book_to_date').val();
+            var book_price      = $('#booking_day_price').val();
+            let date1           = new Date(from_date);
+            let date2           = new Date(to_date);
+            let diff            = date2 - date1;
+            let diff_days       = diff / (1000 * 60 * 60 * 24);
+            if(isNaN(diff_days) || diff_days <= 0){
+                diff_days = 1;
             }
-        });
+            var days_price      = book_price * diff_days;
+            document.getElementById('book_price').innerHTML = '₹'+days_price;
+            document.getElementById('total_price').value = days_price; 
         }
-    }
+        function check_veh_availability(){
+            var from_date       = $('#avb_from_date').val();
+            var to_date         = $('#avb_to_date').val();
+            var new_from_date   = parseDate(from_date);
+            var new_to_date     = parseDate(to_date);            
+            var diff            = (new_from_date.getTime() - new_to_date.getTime()) / (1000 * 60 * 60 * 24);
+            console.log(diff);
+            if(diff >0){
+                Swal.fire("To date must be greater than from date")
+                error = 1;
+                return false;
+            }else{
+                var form_data = $('#veh_avb_form').serialize();
+                $.ajax({
+                url: "<?= base_url(); ?>customer/vehicle_availability/",  // URL to send the request to
+                type: "POST",  // HTTP method (POST)
+                data: form_data,  // Data to send with the request
+                success: function(result) {  // Callback function on success
+                    var obj = JSON.parse(result);  // Parse the JSON response
+                    if (obj.status == 1) {  // If status is 1, success
+                        Swal.fire({
+                            position: "top-end",
+                            icon: "success",  // Use 'icon' instead of 'type' for SweetAlert2
+                            title: obj.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    } else {  // If status is not 1, error
+                        swal(obj.message);  // Display error message
+                    }
+                },
+                error: function(xhr, status, error) {  // Callback function for error
+                console.log("AJAX Error: " + status + ": " + error);  // Log error if any
+                }
+                });
+            }
+        }
         function next_vehicle(){
             var vehicle_id          =document.getElementById('veh_book_id').value;
             var path                = "<?= base_url(); ?>customer/next_vehicle/"+vehicle_id;
@@ -276,6 +284,7 @@
                 document.getElementById('veh_transmission').innerHTML = data[0].transmission_type;
                 document.getElementById('book_veh_name1').innerHTML = data[0].make+ data[0].model;
                 document.getElementById('book_price').innerHTML = '₹'+data[0].daily_charge;
+                document.getElementById('booking_day_price').value = data[0].daily_charge;    
                 document.getElementById('veh_book_id').value = data[0].vehicle_id;    
                 document.getElementById("vehicle-img").src = "<?php echo base_url(); ?>upload/vehicles/"+data[0].vehicle_id+".png";            
                 }
@@ -300,6 +309,11 @@
                     Swal.fire("To date must be greater than from date")
                     error = 1;
                     return false;
+                }
+                else if(from_date==''||to_date==''){
+                    Swal.fire("Date can not be Empty");
+                    return false;
+                    
                 }else{
             var form_data = $('#veh_book_form').serialize();
             console.log(form_data); 

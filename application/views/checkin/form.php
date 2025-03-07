@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout Form</title>
+    <title>Checkin Form</title>
     <link rel="stylesheet" href="<?php echo base_url() ?>/assets/css/checkoutform.css">
     
 </head>
@@ -27,6 +27,8 @@
             $make = $c->make;
             $model = $c->model;
             $license_plate = $c->license_plate;
+            $color = $c->color;
+            $fuel = $c->fuel_type;
             $customer_name = $c->customer_name;
             $checkin_id = '';
             $checkout_time;
@@ -50,61 +52,54 @@
             $make = $c->make;
             $model = $c->model;
             $license_plate = $c->license_plate;
+            $color = $c->color;
+            $fuel = $c->fuel_type;
             $checkin_id = $c->checkin_id;
         }
       
     }
     ?>
-
-
-
-
-
-
-
-
-
-
-
-
-    <form action="<?=base_url()?>/checkin/process" id="registration_form" method="post">
-        
-    <div class="container">
-        <!-- Left Section -->
+    <form action="<?=base_url()?>/checkin/process" id="registration_form" method="post">  
+    <div class="container" style="height:89vh">
         <div class="left">
-        <input type="hidden" name="mode" value="<?=$mode?>" id="">
-        <input type="hidden" name="checkout_id" value="<?=$checkout_id?>" id="">
-        <input type="hidden" name="checkin_id" value="<?=$checkin_id?>" id="">
+            <input type="hidden" name="mode" value="<?=$mode?>" id="">
+            <input type="hidden" name="checkout_id" value="<?=$checkout_id?>" id="">
+            <input type="hidden" name="checkin_id" value="<?=$checkin_id?>" id="">
             <div class="form-group">
-                    <label for="odometer">vehicle:</label>
-                    <input type="hidden" id="vehicle_id" name="vehicle_id" value="<?=$vehicle_id?>" placeholder="">
-                    <input type="text" readonly id="vehicle_name" name="vehicle_name" value="<?=$make .$model .$license_plate?>" placeholder="">
+                <label for="odometer">vehicle:</label>
+                <input type="hidden" id="vehicle_id" name="vehicle_id" value="<?=$vehicle_id?>" placeholder="">
+                <input type="text" readonly id="vehicle_name" name="vehicle_name" value="<?=$make .$model .$license_plate?>" placeholder="">
+            </div>
+            <div class="vehicle-card">
+                <div class="vehicle-spec">
+                    <div id="fuel_type" class="fuel-class"><?=strtoupper($fuel)?></div>
+                    <div id="veh_color" class="color-class"><?=strtoupper($color)?></div>
                 </div>
+                <div class="vehicle-image">
+                    <img id="vehicle_image" style="width:400px; height:240px" src="<?php echo base_url(); ?>upload/vehicles/<?=$vehicle_id?>.png" alt="">
+                </div>
+                <h4 style="text-align: center;"><strong id="veh_name"><?=$make ." ".$model?></strong></h4>
+                <h4 id="license_number" style="text-align:center;position:relative;top:-15px; color:#3b3d3f"><?=$license_plate?></h4>
+            </div>
             <div class="form-row">
                 <div class="form-group">
                     <label for="odometer">Odometer Reading:</label>
                     <input type="text" id="odometer" name="ordometer_in" value="<?=$ordometer_out?>" placeholder="Enter Odometer Reading">
                 </div>
-
                 <div class="form-group">
                     <label for="fuel">Fuel Reading:</label>
                     <input type="text" id="fuel" name="fuel_in" value="<?=$fuel_out?>" placeholder="Enter Fuel Reading">
                 </div>
             </div>
         </div>
-
         <div class="line"></div>
-
-        <!-- Right Section -->
         <div class="right">
-        <div class="form-group">
-                    <label for="duration">Select customer</label>
-                    <input type="hidden" id="customer_id" value="<?=$customer_id?>">
-                    <input type="text" readonly id="customer_name" value="<?=$customer_name?>" placeholder="">
-        </div>
-        
+            <div class="form-group">
+                <label for="duration">Select customer</label>
+                <input type="hidden" id="customer_id" value="<?=$customer_id?>">
+                <input type="text" readonly id="customer_name" value="<?=$customer_name?>" placeholder="">
+            </div>
             <div class="form-row">
-               
                 <div class="form-group">
                     <label for="startDate">From Date:</label>
                     <input type="date" id="startDate" name="checkout_date" value="<?=$checkout_date?>">

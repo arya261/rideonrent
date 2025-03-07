@@ -2,6 +2,11 @@
 
 class checkin extends CI_Controller{
   public function index(){
+    $this->load->library('session');
+    $login_id = $this->session->userdata("login_id");
+    if($login_id == ''){redirect("login");}
+    $emp_type = $this->db->query("SELECT type FROM login WHERE login_id =".$login_id)->row()->type;
+    $data['emp_type'] = $emp_type;
     $checkin=$this->db->query("SELECT I.*,S.customer_name,V.model,V.make,V.license_plate,C.checkout_date FROM checkin I JOIN checkout C ON C.checkout_id=I.checkout_id JOIN customer S ON C.customer_id=S.customer_id JOIN vehicle V ON V.vehicle_id = C.vehicle_id" )->result();
     // echo "<pre>";
     // print_r($checkin);exit();
@@ -9,19 +14,14 @@ class checkin extends CI_Controller{
     $this->load->view("checkin/list", $data);
  
   }            
-  public function add($checkout_id){
-    
-$checkin=$this->db->query("SELECT C.*,S.customer_name,V.model,V.make,v.license_plate FROM checkout C LEFT OUTER JOIN customer S ON S.customer_id=C.customer_id LEFT OUTER JOIN vehicle V ON V.vehicle_id=C.vehicle_id WHERE checkout_id=".$checkout_id)->result();
-$data["checkin"]=$checkin;
-// echo '<pre>';
-//  print_r($checkin); exit();
-
+  public function add($checkout_id){  
+    $checkin=$this->db->query("SELECT C.*,S.customer_name,V.model,V.make,V.license_plate,V.color,V.fuel_type FROM checkout C LEFT OUTER JOIN customer S ON S.customer_id=C.customer_id LEFT OUTER JOIN vehicle V ON V.vehicle_id=C.vehicle_id WHERE checkout_id=".$checkout_id)->result();
+    $data["checkin"]=$checkin;
     $data["mode"]="add";
     $this->load->view("checkin/form",$data);
-    
   }
   public function edit($checkin_id){
-    $checkin=$this->db->query("SELECT I.*,C.customer_id,C.vehicle_id,S.customer_name,V.model,V.make,v.license_plate,C.checkout_date FROM checkin I LEFT OUTER JOIN checkout C ON I.checkout_id= C.checkout_id LEFT OUTER JOIN customer S ON S.customer_id=C.customer_id LEFT OUTER JOIN vehicle V ON V.vehicle_id=C.vehicle_id WHERE checkin_id=".$checkin_id)->result();
+    $checkin=$this->db->query("SELECT I.*,C.customer_id,C.vehicle_id,S.customer_name,V.model,V.make,V.license_plate,V.color,V.fuel_type,C.checkout_date FROM checkin I LEFT OUTER JOIN checkout C ON I.checkout_id= C.checkout_id LEFT OUTER JOIN customer S ON S.customer_id=C.customer_id LEFT OUTER JOIN vehicle V ON V.vehicle_id=C.vehicle_id WHERE checkin_id=".$checkin_id)->result();
     $data['checkin']= $checkin;
     // echo '<pre>'; print_r($checkout); exit();
     $data["mode"]="edit";

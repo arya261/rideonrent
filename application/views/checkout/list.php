@@ -37,7 +37,7 @@
             <tbody>
                 <?php $sno=1;
                  foreach($checkout as $c){
-                    if($c->replacement_request ==1){
+                    if($c->replacement_request ==1 && $c->rep_count==0){
                         $bg_color = '#e4ffef';
                         $color = '3d9151';
                     } else{

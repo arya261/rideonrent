@@ -38,7 +38,7 @@
                 <td><?=$r->ordometer_out?></td>
                 <td>
                     <?php if($r->expected_checkin_date ==''){ ?>
-                    <button onclick="replacement_return(<?=$r->vehicle_id?>,<?=$r->rep_id?>)">Return</button>
+                    <button style=" background-color: #3767dc; color: white; padding: 5px 20px; font-size: 16px;  border: none; cursor: pointer; border-radius: 5px;" onclick="replacement_return(<?=$r->vehicle_id?>,<?=$r->rep_id?>)">Return</button>
                     <?php }?>
                 </td>
 

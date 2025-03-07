@@ -12,7 +12,7 @@
         <div class="left-container">
             <div class="left-div">
                 <h2 style="font-family: monospace;color:white">Welcome To</h2>
-                <h1 style="font-family: monospace;color:white; font-weight:900; font-size:5rem">RIDEONRENT</h1>
+                <h1 class="title_name" style="">RIDEONRENT</h1>
                 <form action="<?=base_url()?>/Login/process" method="post" style="margin-top:7vh">
                     <div class="form-group">
                         <p style="height:10px;color:white">Email</p>

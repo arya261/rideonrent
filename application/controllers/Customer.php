@@ -1,6 +1,11 @@
 <?php
  class Customer extends CI_Controller{
      public function index(){
+        $this->load->library('session');
+        $login_id = $this->session->userdata("login_id");
+        if($login_id == ''){redirect("login");}
+        $emp_type = $this->db->query("SELECT type FROM login WHERE login_id =".$login_id)->row()->type;
+        $data['emp_type'] = $emp_type;
         $customers=$this->db->query("SELECT C.*,A.*,L.verification_status FROM customer C LEFT OUTER JOIN adress A ON A.adress_id=C.adress_id LEFT OUTER JOIN login L ON L.login_id = C.login_id")->result();
         $data['customers']=$customers;
         // echo '<pre>';
@@ -112,13 +117,14 @@
         $from_date      = $this->input->post('book_from_date');
         $to_date        = $this->input->post('book_to_date');
         $vehicle_id     = $this->input->post('vehicle_book_id');
+        $amount         = $this->input->post('total_price');
         $booking_array=[
             'customer_id'   =>$customer_id,
             'vehicle_id'    =>$vehicle_id,
             'from_date'     =>$from_date,
             'to_date'       =>$to_date,
-            'status'        => '0'
-
+            'status'        => '0',
+            'amount'        => $amount,
         ];
         // echo '<pre>'; print_r($booking_array);
         $this->db->insert('booking',$booking_array);

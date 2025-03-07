@@ -2,6 +2,11 @@
 class Vehicle extends CI_controller {
      public function index()
      {
+          $this->load->library('session');
+          $login_id = $this->session->userdata("login_id");
+          if($login_id == ''){redirect("login");}
+          $emp_type = $this->db->query("SELECT type FROM login WHERE login_id =".$login_id)->row()->type;
+          $data['emp_type'] = $emp_type;
       $vehicles = $this->db->query("SELECT * FROM vehicle")->result();
       $data['vehicles'] = $vehicles;
       // echo '<pre>'; print_r($vehicles);exit();

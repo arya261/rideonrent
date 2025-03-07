@@ -51,7 +51,7 @@
                                  
                            <?php }
                            else if($b->status == 1){?>
-                           <button onclick="checkout(<?=$b->booking_id?>)">Checkout</button>
+                           <button style=" background-color:#11ab13e8; color: white; padding: 5px 20px; font-size: 16px;  border: none; cursor: pointer; border-radius: 5px;"onclick="checkout(<?=$b->booking_id?>)">Checkout</button>
                            
 
                             <?php }else{ ?>

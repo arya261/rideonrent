@@ -4,6 +4,11 @@ class Employee extends CI_Controller {
 
     public function index()
     {
+        $this->load->library('session');
+        $login_id = $this->session->userdata("login_id");
+        if($login_id == ''){redirect("login");}
+        $emp_type = $this->db->query("SELECT type FROM login WHERE login_id =".$login_id)->row()->type;
+        $data['emp_type'] = $emp_type;
         $rental=$this->db->query("SELECT C.checkout_date,C.expected_checkin_date,S.customer_name,V.model,V.make,V.license_plate,I.checkin_id FROM checkout C LEFT OUTER JOIN customer S ON C.customer_id=S.customer_id LEFT OUTER JOIN vehicle V ON V.vehicle_id = C.vehicle_id LEFT OUTER JOIN checkin I ON I.checkout_id = C.checkout_id" )->result();
         foreach ($rental as $r) {
             $from_date =  date('Y-m-d', strtotime($r->checkout_date));
@@ -30,6 +35,10 @@ class Employee extends CI_Controller {
        
     }
     public function list() {
+        $this->load->library('session');
+          $login_id = $this->session->userdata("login_id");
+          $emp_type = $this->db->query("SELECT type FROM login WHERE login_id =".$login_id)->row()->type;
+          $data['emp_type'] = $emp_type;
         $employees=$this->db->query("SELECT * FROM employee E LEFT OUTER JOIN login A ON A.login_id=E.login_id")->result();
         $data['employees']=$employees;
         $this->load->view("employee/emp_list",$data);

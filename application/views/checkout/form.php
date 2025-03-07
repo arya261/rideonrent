@@ -51,8 +51,8 @@
             $checkout_time = date("H:i", strtotime($c->from_date));
             $expected_checkin_date = date("Y-m-d", strtotime($c->to_date));
             $expected_checkin_time = date("H:i", strtotime($c->to_date));
-            $fixed_charge = 0;
-            $amount = 0;
+            $fixed_charge = $c->amount;
+            $amount = $c->amount;
             $remark = '';
             $discount = 0;
             $checkout_id = '';
@@ -62,19 +62,7 @@
         }
     }
     ?>
-
-
-
-
-
-
-
-
-
-
-
-    <form action="<?=base_url()?>/checkout/process" id="registration_form" method="post">
-        
+    <form action="<?=base_url()?>/checkout/process" id="registration_form" method="post">     
     <div class="container" style="height:88vh">
         <!-- Left Section -->
         <div class="left">
@@ -180,6 +168,9 @@
     </div>
     </form>
     <script>
+        $(window).on('load',function(){
+            change_vehicle(<?=$vehicle_id?>);
+        })
         function calculateamount() {
               const fixedcharges = parseFloat(document.getElementById('fixed_charge').value) || 0;
               const discount = parseFloat(document.getElementById('discount').value) || 0;
@@ -196,18 +187,17 @@
             }
             function change_vehicle(vehicle_id){
                 var path                = "<?= base_url(); ?>checkout/change_vehicle/"+vehicle_id;
-            $.post(path,function(information){
-            var data = JSON.parse(information);  
-            console.log(data);
-                              
-            if (data && data.length > 0) {
-                document.getElementById('veh_name').innerHTML = data[0].make+data[0].model;
-                document.getElementById('veh_color').innerHTML =data[0].color;
-                document.getElementById('fuel_type').innerHTML = data[0].fuel_type;
-                document.getElementById('license_number').innerHTML = data[0].license_plate;
-                document.getElementById("vehicle_image").src = "<?php echo base_url(); ?>upload/vehicles/"+data[0].vehicle_id+".png";            
-                }
-            })
+                $.post(path,function(information){
+                var data = JSON.parse(information);  
+                console.log(data);              
+                if (data && data.length > 0) {
+                    document.getElementById('veh_name').innerHTML = data[0].make+data[0].model;
+                    document.getElementById('veh_color').innerHTML =data[0].color;
+                    document.getElementById('fuel_type').innerHTML = data[0].fuel_type;
+                    document.getElementById('license_number').innerHTML = data[0].license_plate;
+                    document.getElementById("vehicle_image").src = "<?php echo base_url(); ?>upload/vehicles/"+data[0].vehicle_id+".png";            
+                    }
+                })
             }
     </script>
 </body>

@@ -2,6 +2,11 @@
 
 class  replacement extends CI_controller{
     function index(){
+        $this->load->library('session');
+        $login_id = $this->session->userdata("login_id");
+        if($login_id == ''){redirect("login");}
+        $emp_type = $this->db->query("SELECT type FROM login WHERE login_id =".$login_id)->row()->type;
+        $data['emp_type'] = $emp_type;
         $replacement=$this->db->query("SELECT R.*,V.make,V.model,H.make as old_make,H.model as old_model FROM replacement R LEFT OUTER JOIN checkout C ON R.checkout_id=C.checkout_id LEFT OUTER JOIN vehicle V ON V.vehicle_id=R.vehicle_id LEFT OUTER JOIN vehicle H ON H.vehicle_id=C.vehicle_id")->result();
         $data['replacement']=$replacement;
         // echo '<pre>';print_r($replacement);
